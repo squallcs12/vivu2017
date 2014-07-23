@@ -1,0 +1,29 @@
+{% extends "accounts/base.html" %}
+{% load i18n static %}
+
+{% block title %}{% trans 'Social accounts' %}{% endblock %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css" />
+{% endblock %}
+
+{% block accounts-content %}
+<div id="content-main">
+    <form action="" method="post" id="set_password_form">{% csrf_token %}
+        <div>
+            <h1>{% trans 'Social accounts' %}</h1>
+            <ul id="social_accounts" class="list">
+                {% for social in socials %}
+                <li class="item social social-{{social.provider}}">
+                    <a href="http://twitter.com/account/redirect_by_id/{{social.uid}}" class="zocial {{social.provider}}">
+                        {{social.uid}}
+                    </a>
+                </li>
+                {% endfor%}
+            </ul>
+        </div>
+    </form>
+</div>
+
+{% endblock %}

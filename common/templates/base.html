@@ -1,0 +1,67 @@
+{% load i18n %}
+{% load staticfiles %}
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
+<html xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}" version="-//W3C//DTD XHTML 1.1//EN" xmlns="http://www.w3.org/1999/xhtml" ng-app="srd">
+    <head>
+        <title>{% block title %}Home{% endblock %} - {{ SITE_NAME }}</title>
+        <meta http-equiv="content-type" content="text/html; charset=utf-8" />
+        <meta http-equiv="cache-control" content="public" />
+        <meta name="robots" content="follow, all" />
+        <meta name="language" content="{{ LANGUAGE_CODE }}" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <meta name="description" content="{% block meta-description %}{% trans 'Service Request Distribution' %}{% endblock %}" />
+        <meta name="keywords" content="{% block meta-keywords %}{% endblock %}" />
+        <meta name="author" content="Antipro.VN" />
+        {% block meta %}{% endblock %}
+        <link rel="pingback" href="/xmlrpc/" />
+        <link rel="shortcut icon" href="/favicon.ico" />
+        <link rel="home" href="/" />
+        {% block head-link %}
+            <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap/cerulean.css" %}" />
+            <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}" />
+        {% endblock %}
+        {% include '_js_defined_params.html' %}
+        {% block head-js %}
+            <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+            <script>
+                if (!window.jQuery){
+                    document.write('<script src="{{ STATIC_URL }}js/jquery.1.10.2.min.js"></sc' + 'ript>');
+                }
+                jQuery.noConflict();
+            </script>
+            <script src="{% static "js/jquery.cookie.js" %}"></script>
+            <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
+        {% endblock %}
+        <script src="{% static "js/head_define.js" %}"></script>
+    </head>
+    <body id="{% block page_id %}{% endblock %}">
+        {% include '_top_nav.html' %}
+        <div class="container">
+            {% include '_top_banner.html' %}
+            {% block slider %}{% endblock %}
+            <div id="content" class="hfeed">
+                {% include '_notification.html' %}
+
+                {% block content %}
+
+                {% endblock %}
+            </div>
+            <footer>
+                <div class="row">
+                    <div class="col-lg-12">
+                        {% include '_footer_nav.html' %}
+                        <p>
+                            {% blocktrans %}Powered by <a href="/">Soil IQ</a>{% endblocktrans %}
+                        </p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+
+    {% block footer-js %}
+        <script src="{% static "js/head_define.js" %}"></script>
+        <script src="{% static "js/bootstrap.min.js" %}"></script>
+        <script src="{% static "js/foot_define.js" %}"></script>
+    {% endblock %}
+    </body>
+</html>

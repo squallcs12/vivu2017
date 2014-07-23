@@ -1,0 +1,17 @@
+machine:
+  environment:
+    RUNNING_ENV: circle_ci
+    RDS_DBNAME: circle_test
+    RDS_USERNAME: ubuntu
+    RDS_HOSTNAME: localhost
+
+dependencies:
+  override:
+    - pip install -r requirements.txt
+
+test:
+  pre:
+    - python manage.py syncdb --noinput --migrate
+  override:
+    - python manage.py harvest
+    - python manage.py test

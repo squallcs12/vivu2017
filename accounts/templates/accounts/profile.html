@@ -1,0 +1,35 @@
+{% extends "accounts/base.html" %}
+{% load i18n %}
+
+{% block title %}{% trans 'Your profile' %}{% endblock %}
+
+{% block accounts-content %}
+<div class="profile-page">
+    <h3>{% blocktrans with username=user.username %}{{ username }} profile {% endblocktrans %}</h3>
+    <div class="row">
+        <div class="col-sm-6 col-md-4">
+            <img src="{{ profile.avatar }}" alt="" class="img-rounded img-responsive" />
+        </div>
+        <div class="col-sm-6 col-md-8">
+            <h4>{{ profile.fullname }} </h4>
+            <span class="label label-default">
+                {% if profile.gender %}
+                    {% trans "Male" %}
+                {% else %}
+                    {% trans "Female" %}
+                {% endif %}
+            </span>
+            <p>
+                <span title="{% trans 'Homepage' %}"><i class="glyphicon glyphicon-globe"></i><a href="{{ profile.homepage }}">{{ profile.homepage }}</a></span>
+                <br />
+                <span title="{% trans 'Birthday' %}" ><i class="glyphicon glyphicon-calendar"></i>{{ profile.birthday }}</span>
+            </p>
+        </div>
+    </div>
+    {% if editable %}
+    <div class="text-center">
+        <a class="btn btn-primary" href="{% url 'accounts_edit_profile' %}">{% trans 'Edit profile' %}</a>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

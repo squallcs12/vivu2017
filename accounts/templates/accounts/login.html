@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load i18n %}
+
+{% load back_url_tag %}
+{% block title %}{% trans 'Log in' %}{% endblock %}
+
+{% block head-link %}
+    {{ block.super }}
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css" />
+{% endblock %}
+
+{% block content %}
+<div class="login_page">
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="well">
+                {% if not user.is_authenticated %}
+                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form" class="form-horizontal">
+                        {% csrf_token %}
+                        <fieldset>
+                            <legend>{% trans 'Log in with your website account' %}</legend>
+                            {% include "general/form_render.html" %}
+                            <div class="form-group">
+                                <div class="col-lg-9 col-lg-offset-3">
+                                      <button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button>
+                                      <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
+                                </div>
+                              </div>
+                        </fieldset>
+                        <input type="hidden" name="next" value="{{ next }}" />
+                    </form>
+                {% else %}
+                    <p>{% trans 'You are currently logged in as' %} {{user.username}}</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+{% endblock %}
