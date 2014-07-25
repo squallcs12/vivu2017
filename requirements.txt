@@ -1,14 +1,27 @@
 Django==1.6.5
 MySQL-python==1.2.5
+PIL==1.1.7
 South==0.8.4
+argparse==1.2.1
+-e git+https://github.com/squallcs12/django-awesome-avatar.git@c912a9c37067a3938a2394d8e39d7e019d0696e9#egg=django_awesome_avatar-master
 django-extensions==1.3.6
+django-postman==3.1.0
 extras==0.0.3
+facebook-sdk==0.4.0
 fuzzywuzzy==0.2
+httplib2==0.9
 -e git://github.com/gabrielfalcao/lettuce@a483847ed8de4485199e7edc587b5fa6d783da15#egg=lettuce-dev
+mock==1.0.1
+oauth2==1.5.211
+oauthlib==0.6.3
 python-mimeparse==0.1.4
+python-openid==2.2.5
+python-social-auth==0.1.26
 python-subunit==0.0.18
+requests==2.3.0
+requests-oauthlib==0.4.1
 selenium==2.41.0
-six==1.6.1
+six==1.7.3
 sure==1.2.7
 testscenarios==0.4
 testtools==0.9.35

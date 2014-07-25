@@ -6,6 +6,7 @@ Created on Apr 10, 2014
 
 from selenium_shortcut import find, find_all
 
+
 class ShortDom(object):
     @classmethod
     def element_by_tagname_and_text(cls, tag, text, parent="body"):

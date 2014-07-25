@@ -3,8 +3,9 @@ Created on Oct 21, 2013
 
 @author: antipro
 '''
-class GoogleAnalytics(object):
 
+
+class GoogleAnalytics(object):
     def __init__(self):
         self.pageview = {}
 

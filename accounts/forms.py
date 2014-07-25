@@ -5,9 +5,9 @@ Created on Sep 16, 2013
 '''
 from django import forms
 
-from accounts.models import UserProfile
+from accounts.models import User
 
-class UserProfileForm(forms.ModelForm):
+
+class UserForm(forms.ModelForm):
     class Meta:
-        model = UserProfile
-        exclude = ('user',)
+        model = User

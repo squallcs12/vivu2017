@@ -3,7 +3,7 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a href="/" class="navbar-brand">{{SITE_NAME}}</a>
+            <a href="/" class="navbar-brand">{{ SITE_NAME }}</a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -19,19 +19,20 @@
 
             <ul class="nav navbar-nav navbar-right">
                 {% if user.is_authenticated %}
-                <li class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                        {{user.username}}
-                        <b class="caret"></b>
-                    </a>
-                    <ul class="dropdown-menu">
-                        <li><a class="logout" href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
-                    </ul>
-                </li>
+                    <li class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                            {{ user.username }}
+                            <b class="caret"></b>
+                        </a>
+                        <ul class="dropdown-menu">
+                            <li><a class="logout" href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
+                        </ul>
+                    </li>
                 {% else %}
-                <li>
-                    <a href="{% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{request.path}}{% endif %}">{% trans "Log in" %}</a>
-                </li>
+                    <li>
+                        <a href="
+                                {% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}">{% trans "Log in" %}</a>
+                    </li>
                 {% endif %}
             </ul>
 

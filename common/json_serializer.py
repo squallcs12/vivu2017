@@ -7,10 +7,12 @@ from io import StringIO
 from django.db.models import Model
 from django.db.models.query import QuerySet
 from django.utils.encoding import smart_unicode
-from django.utils.simplejson import dumps
+from json import dumps
+
 
 class UnableToSerializeError(Exception):
     """ Error for not implemented classes """
+
     def __init__(self, value):
         self.value = value
         Exception.__init__(self)
@@ -18,10 +20,14 @@ class UnableToSerializeError(Exception):
     def __str__(self):
         return repr(self.value)
 
+
 class JSONSerializer():
     boolean_fields = ['BooleanField', 'NullBooleanField']
     datetime_fields = ['DatetimeField', 'DateField', 'TimeField']
     number_fields = ['IntegerField', 'AutoField', 'DecimalField', 'FloatField', 'PositiveSmallIntegerField']
+
+    def __init__(self):
+        pass
 
     def serialize(self, obj, **options):
         self.options = options
@@ -56,6 +62,7 @@ class JSONSerializer():
     def start_array(self):
         """Called when serializing of an array starts."""
         self.stream.write(u'[')
+
     def end_array(self):
         """Called when serializing of an array ends."""
         self.stream.write(u']')
@@ -173,8 +180,8 @@ class JSONSerializer():
                 # Related to remote object via other field
                 pk = getattr(related, field.rel.field_name)
             d = {
-                    'pk': pk,
-                }
+                'pk': pk,
+            }
             if self.use_natural_keys and hasattr(related, 'natural_key'):
                 d.update({'natural_key': related.natural_key()})
             if type(d['pk']) == str and d['pk'].isdigit():
@@ -196,8 +203,8 @@ class JSONSerializer():
                 hasRelationships = True
                 pk = relobj._get_pk_val()
                 d = {
-                        'pk': pk,
-                    }
+                    'pk': pk,
+                }
                 if self.use_natural_keys and hasattr(relobj, 'natural_key'):
                     d.update({'natural_key': relobj.natural_key()})
                 if type(d['pk']) == str and d['pk'].isdigit():

@@ -8,6 +8,7 @@ from django.forms.fields import DateField, DateTimeField
 
 register = template.Library()
 
+
 @register.inclusion_tag("general/form_requirement.html")
 def form_requirements(form):
     context = {}

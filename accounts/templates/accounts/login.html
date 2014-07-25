@@ -6,35 +6,93 @@
 
 {% block head-link %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css" />
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css"/>
 {% endblock %}
 
 {% block content %}
-<div class="login_page">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="well">
-                {% if not user.is_authenticated %}
-                    <form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form" class="form-horizontal">
-                        {% csrf_token %}
-                        <fieldset>
-                            <legend>{% trans 'Log in with your website account' %}</legend>
-                            {% include "general/form_render.html" %}
-                            <div class="form-group">
-                                <div class="col-lg-9 col-lg-offset-3">
-                                      <button type="submit" id="id_login" class="btn btn-primary">{% trans 'Log in' %}</button>
-                                      <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
+    <div class="login_page">
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="well">
+                    {% if not user.is_authenticated %}
+                        <form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form"
+                              class="form-horizontal">
+                            {% csrf_token %}
+                            <fieldset>
+                                <legend>{% trans 'Log in with your website account' %}</legend>
+                                {% include "general/form_render.html" %}
+                                <div class="form-group">
+                                    <div class="col-lg-9 col-lg-offset-3">
+                                        <button type="submit" id="id_login"
+                                                class="btn btn-primary">{% trans 'Log in' %}</button>
+                                        <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
+                                    </div>
                                 </div>
-                              </div>
-                        </fieldset>
-                        <input type="hidden" name="next" value="{{ next }}" />
-                    </form>
-                {% else %}
-                    <p>{% trans 'You are currently logged in as' %} {{user.username}}</p>
-                {% endif %}
+                            </fieldset>
+                            <input type="hidden" name="next" value="{{ next }}"/>
+                        </form>
+                    {% else %}
+                        <p>{% trans 'You are currently logged in as' %} {{ request.user.first_name }} {{ request.user.last_name }}</p>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6">
+                <div class="well">
+                    {% if not user.is_authenticated %}
+                        <p>{% trans 'Or log in with your social network account:' %}</p>
+                    {% else %}
+                        <p>{% trans 'Associate your account with social network account:' %}</p>
+                    {% endif %}
+                    <div id="social_login">
+                        <a href="{% url 'social:begin' 'facebook' %}{% back_url %}" class="zocial facebook"
+                           id="facebook" title="{% trans 'Login with your Facebook account' %}">
+                            {% trans 'Facebook' %}
+                        </a>
+                        <a href="{% url 'social:begin' 'twitter' %}{% back_url %}" class="zocial twitter"
+                           id="twitter" title="{% trans 'Login with your Twitter account' %}">
+                            {% trans 'Twitter' %}
+                        </a>
+                        <span class="zocial googleplus g-signin"
+                           id="google" title="{% trans 'Login with your Google account' %}"
+                           data-scope="{{ plus_scope }}"
+                           data-clientid="{{ plus_id }}"
+                           data-redirecturi="a"
+                           data-accesstype="offline"
+                           data-cookiepolicy="single_host_origin"
+                           data-callback="signInCallback">
+                            {% trans 'Google' %}
+                        </span>
+                        <script type="text/javascript">
+                            (function () {
+                                var po = document.createElement('script');
+                                po.type = 'text/javascript';
+                                po.async = true;
+                                po.src = 'https://plus.google.com/js/client:plusone.js?onload=start';
+                                var s = document.getElementsByTagName('script')[0];
+                                s.parentNode.insertBefore(po, s);
+                            })();
+                        </script>
+                        <script type="text/javascript">
+                            var signInCallback = function (result) {
+                                if (result['error']) {
+                                    console.log('An error happened:' + result['error']);
+                                } else {
+                                    (function($){
+                                        $('#code').attr('value', result['code']);
+                                        $('#at').attr('value', result['access_token']);
+                                        $('#google-plus').submit();
+                                    })(jQuery);
+                                }
+                            };
+                        </script>
+                        <form id="google-plus" method="post" action="{% url 'social:complete' "google-plus" %}">{% csrf_token %}
+                            <input id="at" type="hidden" name="access_token" value="" />
+                            <input id="code" type="hidden" name="code" value="" />
+                        </form>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
-</div>
 
 {% endblock %}

@@ -12,6 +12,7 @@ register = template.Library()
 css_files = []
 js_files = []
 
+
 @register.tag
 def back_url(parser, token):
     try:
@@ -19,6 +20,7 @@ def back_url(parser, token):
         return BackUrlNode(default=default)
     except ValueError:
         return BackUrlNode()
+
 
 class BackUrlNode(template.Node):
     def __init__(self, default=None, redirect_field_name=REDIRECT_FIELD_NAME):

@@ -5,6 +5,7 @@ Created on Jul 28, 2013
 '''
 from django.template.response import TemplateResponse
 
+
 def main(request, template="homepage.html"):
     data = {}
 

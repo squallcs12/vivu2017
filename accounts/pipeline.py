@@ -8,6 +8,7 @@ from django.core.exceptions import MultipleObjectsReturned, ObjectDoesNotExist
 from social_auth.exceptions import AuthException
 from django.contrib.auth.models import User
 
+
 def redirect_associate_by_email(details, user=None, *args, **kwargs):
     if user:
         return None

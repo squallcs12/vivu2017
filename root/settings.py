@@ -60,6 +60,7 @@ INSTALLED_APPS = (
     'south',
     'django_extensions',
     'accounts',
+    'social.apps.django_app.default',
     'common',
 )
 
@@ -100,11 +101,14 @@ TEMPLATE_CONTEXT_PROCESSORS = (
     "django.contrib.auth.context_processors.auth",
     "django.core.context_processors.debug",
     "django.core.context_processors.i18n",
+    'django.core.context_processors.request',
     "django.core.context_processors.media",
     "django.core.context_processors.static",
     "django.core.context_processors.tz",
     "django.contrib.messages.context_processors.messages",
     'common.context_processors.site_name',
+    'social.apps.django_app.context_processors.backends',
+    'social.apps.django_app.context_processors.login_redirect',
 )  # Optional
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -123,10 +127,46 @@ USE_TZ = True
 TEMPLATE_LOADERS = (
     'django.template.loaders.filesystem.Loader',
     'django.template.loaders.app_directories.Loader',
-#     'django.template.loaders.eggs.Loader',
 )
 
-LOGIN_REDIRECT_URL = '/'
+AUTH_USER_MODEL = 'accounts.User'
+AWESOME_AVATAR = {
+    'width': 200,
+    'height': 200,
+
+    'select_area_width': 500,
+    'select_area_height': 300,
+
+    'save_quality': 90,
+    'save_format': 'png',
+}
+
+# social auth
+
+AUTHENTICATION_BACKENDS = (
+    'social.backends.google.GooglePlusAuth',
+    'social.backends.twitter.TwitterOAuth',
+    'social.backends.facebook.FacebookOAuth2',
+    'django.contrib.auth.backends.ModelBackend',
+)
+SOCIAL_AUTH_TWITTER_KEY = 'VCbibbV9XJ0NN12m7KXUrQ'
+SOCIAL_AUTH_TWITTER_SECRET = 'xZ4aXbHVBMe1Hh7hETRnXAYb01j1DFiBiAVVvcrQc0M'
+SOCIAL_AUTH_FACEBOOK_KEY = '163282880528447'
+SOCIAL_AUTH_FACEBOOK_SECRET = '10da9db623ab2ce4a5d9cec50be0ae82'
+SOCIAL_AUTH_FACEBOOK_SCOPE = []
+SOCIAL_AUTH_GOOGLE_PLUS_KEY = '440453638830-ssti5ptgqu4hrt3j9tpe74fcpa61nse2.apps.googleusercontent.com'
+SOCIAL_AUTH_GOOGLE_PLUS_SECRET = 'p-LK8Q1RVPrwmG5n1GovBUBT'
+SOCIAL_AUTH_NEW_USER_REDIRECT_URL = '/accounts/set_password'
+
+SOCIAL_AUTH_UID_LENGTH = 222
+SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 200
+SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 135
+SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
+
+FACEBOOK_APP_ACCESS_TOKEN = '163282880528447|IyNyMAZGdb_Wej9QwkWLRdo4N9Q'
+
+TEST_EMAIL = 'email@example.com'
+TEST_PASSWORD = 'password'
 
 try:
     from local_settings import *

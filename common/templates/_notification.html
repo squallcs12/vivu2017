@@ -1,8 +1,8 @@
 {% load bootstrap %}
 {% if messages %}
-	<div class="notifications">
-	{% for message in messages %}
-    	{% render_message message %}
-	{% endfor %}
-	</div>
+    <div class="notifications">
+        {% for message in messages %}
+            {% render_message message %}
+        {% endfor %}
+    </div>
 {% endif %}
