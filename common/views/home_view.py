@@ -1,14 +1,11 @@
-'''
-Created on Jul 28, 2013
-
-@author: antipro
-'''
-from django.template.response import TemplateResponse
+from django.views.generic.base import TemplateView
 
 
-def main(request, template="homepage.html"):
-    data = {}
+class HomeView(TemplateView):
+    template_name = "homepage.html"
 
-    data['show_top_banner'] = True
+    def get_context_data(self, **kwargs):
+        context = super(HomeView, self).get_context_data(**kwargs)
+        context['show_top_banner'] = True
 
-    return TemplateResponse(request, template, data)
+        return context

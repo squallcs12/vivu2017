@@ -1,5 +1,4 @@
 {% load i18n %}
-{% load url from future %}
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
@@ -31,7 +30,7 @@
                 {% else %}
                     <li>
                         <a href="
-                                {% url 'login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}">{% trans "Log in" %}</a>
+                                {% url 'accounts:login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}">{% trans "Log in" %}</a>
                     </li>
                 {% endif %}
             </ul>

@@ -1,10 +1,12 @@
+<!doctype html>
+<!--[if lt IE 7]><html class="no-js lt-ie9 lt-ie8 lt-ie7" lang=""> <![endif]-->
+<!--[if IE 7]><html class="no-js lt-ie9 lt-ie8" lang=""> <![endif]-->
+<!--[if IE 8]><html class="no-js lt-ie9" lang=""> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js" lang=""> <!--<![endif]-->
 {% load i18n %}
 {% load staticfiles %}
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.1//EN" "http://www.w3.org/TR/xhtml11/DTD/xhtml11.dtd">
-<html xml:lang="{{ LANGUAGE_CODE }}" lang="{{ LANGUAGE_CODE }}" version="-//W3C//DTD XHTML 1.1//EN"
-      xmlns="http://www.w3.org/1999/xhtml" ng-app="srd">
 <head>
-    <title>{% block title %}Home{% endblock %} - {{ SITE_NAME }}</title>
+    <title>{% block title %}Home{% endblock %} - {{ request.site.name }}</title>
     <meta http-equiv="content-type" content="text/html; charset=utf-8"/>
     <meta http-equiv="cache-control" content="public"/>
     <meta name="robots" content="follow, all"/>
@@ -19,8 +21,8 @@
     <link rel="shortcut icon" href="/favicon.ico"/>
     <link rel="home" href="/"/>
     {% block head-link %}
-        <link rel="stylesheet" type="text/css" href="{% static "css/bootstrap/cerulean.css" %}"/>
-        <link rel="stylesheet" type="text/css" href="{% static "css/style.css" %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/bootstrap/cerulean.css' %}"/>
+        <link rel="stylesheet" type="text/css" href="{% static 'css/style.css' %}"/>
     {% endblock %}
     {% include '_js_defined_params.html' %}
     {% block head-js %}
@@ -31,10 +33,10 @@
             }
             jQuery.noConflict();
         </script>
-        <script src="{% static "js/jquery.cookie.js" %}"></script>
+        <script src="{% static 'js/jquery.cookie.js' %}"></script>
         <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.15/angular.min.js"></script>
     {% endblock %}
-    <script src="{% static "js/head_define.js" %}"></script>
+    <script src="{% static 'js/head_define.js' %}"></script>
 </head>
 <body id="{% block page_id %}{% endblock %}">
 {% include '_top_nav.html' %}
@@ -53,17 +55,17 @@
             <div class="col-lg-12">
                 {% include '_footer_nav.html' %}
                 <p>
-                    {% blocktrans %}Powered by <a href="/">Soil IQ</a>{% endblocktrans %}
+                    {% blocktrans %}Powered by <a href="/">{{ request.site.name }}</a>{% endblocktrans %}
                 </p>
             </div>
         </div>
     </footer>
 </div>
 
+<script src="{% static 'js/head_define.js' %}"></script>
 {% block footer-js %}
-    <script src="{% static "js/head_define.js" %}"></script>
-    <script src="{% static "js/bootstrap.min.js" %}"></script>
-    <script src="{% static "js/foot_define.js" %}"></script>
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
 {% endblock %}
+<script src="{% static 'js/foot_define.js' %}"></script>
 </body>
 </html>
