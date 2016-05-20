@@ -12,7 +12,7 @@ from accounts.forms import UserForm
 class EditProfileView(FormView):
     template = "accounts/edit_profile.html"
     form_class = UserForm
-    success_url = reverse_lazy('accounts_profile')
+    success_url = reverse_lazy('accounts:profile')
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):

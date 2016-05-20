@@ -5,7 +5,8 @@
 
 {% block head-link %}
     {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="https://cdnjs.cloudflare.com/ajax/libs/css-social-buttons/1.2.0/css/zocial.min.css"/>
 {% endblock %}
 
 {% block content %}
@@ -14,7 +15,7 @@
             <div class="col-lg-6">
                 <div class="well">
                     {% if not user.is_authenticated %}
-                        <form method="post" action="{% url 'django.contrib.auth.views.login' %}" id="login_form"
+                        <form method="post" action="{% url 'accounts:login' %}" id="login_form"
                               class="form-horizontal">
                             {% csrf_token %}
                             <fieldset>
@@ -24,7 +25,7 @@
                                     <div class="col-lg-9 col-lg-offset-3">
                                         <button type="submit" id="id_login"
                                                 class="btn btn-primary">{% trans 'Log in' %}</button>
-                                        <a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a>
+                                        <a href="{% url 'accounts:password_reset' %}">{% trans "Forgot your password?" %}</a>
                                     </div>
                                 </div>
                             </fieldset>
@@ -43,11 +44,11 @@
                         <p>{% trans 'Associate your account with social network account:' %}</p>
                     {% endif %}
                     <div id="social_login">
-                        <a href="{% url 'social:begin' 'facebook' %}{% back_url %}" class="zocial facebook"
+                        <a href="{% url 'social:begin' 'facebook' %}?next={{ next }}" class="zocial facebook"
                            id="facebook" title="{% trans 'Login with your Facebook account' %}">
                             {% trans 'Facebook' %}
                         </a>
-                        <a href="{% url 'social:begin' 'twitter' %}{% back_url %}" class="zocial twitter"
+                        <a href="{% url 'social:begin' 'twitter' %}?next={{ next }}" class="zocial twitter"
                            id="twitter" title="{% trans 'Login with your Twitter account' %}">
                             {% trans 'Twitter' %}
                         </a>

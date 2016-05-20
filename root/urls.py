@@ -21,5 +21,6 @@ from common.views.home_view import HomeView
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^social_auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', HomeView.as_view(), name='index'),
 ]
