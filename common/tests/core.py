@@ -1,10 +1,10 @@
 import json
 import os
+import platform
 import subprocess
 import threading
 import time
 from sys import platform as _platform
-import platform
 
 import django
 import django_nose
@@ -12,19 +12,19 @@ from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.auth import get_user_model
 from django.core import management
+from django.core.urlresolvers import reverse
 from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
 from django_nose.plugin import ResultPlugin, DjangoSetUpPlugin, TestReorderer
 from django_nose.runner import _get_plugins_from_settings
+from faker import Faker
 from nose.core import TestProgram, TextTestRunner
 from nose.result import TextTestResult
-from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium import webdriver
+from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
 
 from common.tests.factories.user_factory import UserFactory
-
-from faker import Faker
 
 User = get_user_model()
 
@@ -42,27 +42,37 @@ def element_by_tagname_and_text(self, tag, text):
     except NoSuchElementException:
         pass
     return False
+
+
 WebElement.element_by_tagname_and_text = element_by_tagname_and_text
 
 
 def button(self, text):
     return self.element_by_tagname_and_text("button", text)
+
+
 WebElement.button = button
 
 
-def exit(self, type, value, traceback):
+def _exit(self, type, value, traceback):
     return
+
+
 WebElement.__enter__ = lambda x: x
-WebElement.__exit__ = exit
+WebElement.__exit__ = _exit
 
 
 def select_by_visible_text(self, text):
     Select(self).select_by_visible_text(text)
+
+
 WebElement.select_by_visible_text = select_by_visible_text
 
 
 def has_class(self, value):
     return value in self.get_attribute('class')
+
+
 WebElement.has_class = has_class
 
 
@@ -84,36 +94,12 @@ class UserTestBaseMixin(object):
             self.user = user
         return user
 
-    def init_user_origin(self):
-        email = fake.email()
-        password = 'password'
-        first_name = fake.first_name()
-        user = User.objects.create( email=email, password=password, first_name=first_name,
-                                    is_staff = True, is_active = True, is_active_with_code = True,
-                                    is_guest = False)
-        user.set_password('password')
-        user.save()
-        return user
-
     def login_user(self, user=None):
         if user is None:
             if self.user is None:
                 self.init_user()
             user = self.user
         self.login(user)
-
-    def login_user_origin(self, user=None):
-        if user is None:
-            if self.user is None:
-                self.init_user_origin()
-            user = self.user
-        self.login_origin(user)
-
-    def login_provider(self, user=None):
-        self.login_user(user)
-        if not self.user.is_provider:
-            self.user.is_provider = True
-            self.user.save()
 
 
 class ChangeBrowserContext(object):
@@ -155,32 +141,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
         return browser
 
-    def init_chrome(self):
-        options = webdriver.ChromeOptions()
-        options.add_argument('enable-usermedia-screen-capturing')
-        options.add_argument('auto-select-desktop-capture-source=Entire screen')
-        options.add_argument('use-fake-device-for-media-stream')
-        options.add_argument('use-fake-ui-for-media-stream')
-        options.add_argument('disable-web-security')
-        options.add_extension('_tests/extensions/Cooler-Platform_v1.1.crx')
-        driver_location = ""
-
-        if _platform == "linux" or _platform == "linux2":
-            # linux
-            driver_location = platform.machine().endswith('32') and "_tests/chromedriver-linux32" or "_tests/chromedriver-linux64"
-        elif _platform == "darwin":
-            # OS X
-            driver_location = "_tests/chromedriver-mac"
-        elif _platform == "win32":
-            # Windows...
-            driver_location = "_tests/chromedriver-win.exe"
-
-        browser = webdriver.Chrome(executable_path=driver_location, chrome_options=options)
-
-        browser.implicitly_wait(10)
-        browser.set_window_size(width=1200, height=800)
-        return browser
-
     def init_phantomjs(self):
         return webdriver.PhantomJS()
 
@@ -188,7 +148,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         if os.environ.get('BROWSER') == 'phantomjs':
             browser = self.init_phantomjs()
         else:
-            browser = self.init_chrome()
+            browser = self.init_firefox()
         world.browsers.append(browser)
         return browser
 
@@ -202,54 +162,15 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         return world.browser
 
     @classmethod
-    def start_node_server(cls):
-        if cls.source_dir:  # no need to run server per test case on circleci
-            return
-
-        stderr = stdout = subprocess.PIPE
-        if os.environ.get('NODE_LOG', '0') == '1':
-            stderr = stdout = None
-        env = os.environ.copy()
-        env.update({
-            'DB_NAME': settings.DATABASES['default']['NAME'],
-            'SOCKET_PORT': '3005',
-        })
-        cls.node_server_thread = subprocess.Popen(
-            ["node socket/index.js"],
-            shell=True,
-            env=env,
-            stdout=stdout,
-            stderr=stderr
-        )
-
-    @classmethod
-    def end_node_server(cls):
-        if not cls.node_server_thread:
-            return
-
-        cls.node_server_thread.terminate()
-        netstat = subprocess.Popen("netstat -ltnpu".split(), stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-        grep = subprocess.Popen("grep 3005".split(), stdin=netstat.stdout, stdout=subprocess.PIPE)
-        output = grep.communicate()[0]
-        try:
-            pid = output.split()[-1].decode().split("/")[0]
-        except IndexError:
-            pass
-        else:
-            subprocess.Popen(['kill', pid], stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-
-    @classmethod
     def setUpClass(cls):
         if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
             management.call_command('collectstatic', interactive=False, verbosity=0)
             LiveServerTestCase.static_collected = True
 
-        cls.start_node_server()
         super(BaseLiveTestCase, cls).setUpClass()
 
     @classmethod
     def tearDownClass(cls):
-        cls.end_node_server()
         super(BaseLiveTestCase, cls).tearDownClass()
 
     def visit(self, page):
@@ -282,15 +203,8 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.find("input[type='submit']").click()
         self.until(lambda: self.browser.page_source.should.contain(user.first_name))  # login successfully
 
-    def login_origin(self, user):
-        self.visit(settings.LOGIN_URL)
-        self.find("#id_username").send_keys(user.email)
-        self.find("#id_password").send_keys('password')
-        self.find("input[type='submit']").click()
-        self.until(lambda: self.browser.page_source.should.contain(user.first_name))  # login successfully
-
     def logout(self):
-        self.visit('/accounts/logout')
+        self.visit(reverse('accounts:logout'))
 
     def element_exist(self, css_selector):
         try:
@@ -455,7 +369,6 @@ class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
 
 
 class DjangoNoseTextTestResult(TextTestResult):
-
     def addError(self, test, err):
         BaseLiveTestCase.take_screen_shot()
         BaseLiveTestCase.close_browsers()
