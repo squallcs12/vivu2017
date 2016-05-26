@@ -17,7 +17,6 @@ from django.core.urlresolvers import reverse_lazy
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
@@ -27,8 +26,7 @@ SECRET_KEY = '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 
@@ -57,6 +55,7 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'root.urls'
@@ -80,7 +79,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'root.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
@@ -90,7 +88,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.9/ref/settings/#auth-password-validators
@@ -110,7 +107,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.9/topics/i18n/
 
@@ -124,10 +120,9 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/
-
+STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
@@ -135,7 +130,7 @@ AUTH_USER_MODEL = 'accounts.User'
 # social auth
 
 AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GooglePlusAuth',
+    'social.backends.google.GoogleOAuth2',
     'social.backends.twitter.TwitterOAuth',
     'social.backends.facebook.FacebookOAuth2',
     'django.contrib.auth.backends.ModelBackend',
@@ -144,9 +139,9 @@ SOCIAL_AUTH_TWITTER_KEY = os.getenv('SOCIAL_AUTH_TWITTER_KEY')
 SOCIAL_AUTH_TWITTER_SECRET = os.getenv('SOCIAL_AUTH_TWITTER_SECRET')
 SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
 SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = os.getenv('SOCIAL_AUTH_FACEBOOK_SCOPE')
-SOCIAL_AUTH_GOOGLE_PLUS_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_PLUS_KEY')
-SOCIAL_AUTH_GOOGLE_PLUS_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_PLUS_SECRET')
+SOCIAL_AUTH_FACEBOOK_SCOPE = []
+SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
+SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
 SOCIAL_AUTH_NEW_USER_REDIRECT_URL = reverse_lazy('accounts:set_user_password')
 
 SOCIAL_AUTH_UID_LENGTH = 222
@@ -157,3 +152,8 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 SITE_NAME = "Django"
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
+
+EMAIL_HOST = 'localhost'
+
+LOGIN_URL = reverse_lazy('login')
+LOGIN_ERROR_URL = reverse_lazy('login')

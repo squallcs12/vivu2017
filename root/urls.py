@@ -17,10 +17,13 @@ from django.conf.urls import url, include
 from django.contrib import admin
 
 from common.views.home_view import HomeView
+from root.views import favicon_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
     url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^accounts/', include('accounts.auth_urls')),
     url(r'^social_auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', HomeView.as_view(), name='index'),
+    url(r'^favicon.ico', favicon_view),
 ]

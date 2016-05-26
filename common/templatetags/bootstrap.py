@@ -9,7 +9,7 @@ from django.forms.fields import DateField, DateTimeField
 register = template.Library()
 
 
-@register.inclusion_tag("general/form_requirement.html")
+@register.inclusion_tag('general/form_requirement.html')
 def form_requirements(form):
     context = {}
     for bound_field in form:
@@ -23,7 +23,9 @@ def form_requirements(form):
     return context
 
 
-@register.inclusion_tag("_notification_message.html")
+@register.inclusion_tag('_notification_message.html')
 def render_message(message):
-    message.tags_array = message.tags.split(" ")
-    return {"message": message}
+    tags = message.tags.replace('error', 'danger')
+    tags = ' '.join('alert-{tag}'.format(tag=x) for x in tags.split(' '))
+    message.class_tags = tags
+    return {'message': message}

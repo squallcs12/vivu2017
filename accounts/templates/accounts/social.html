@@ -5,31 +5,34 @@
 {% block title %}{% trans 'Social accounts' %}{% endblock %}
 
 {% block head-link %}
-    {{ block.super }}
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}css/accounts/zocial.css"/>
+{{ block.super }}
+<link rel="stylesheet" type="text/css"
+      href="https://cdnjs.cloudflare.com/ajax/libs/css-social-buttons/1.2.0/css/zocial.min.css"/>
 {% endblock %}
 
 {% block accounts-content %}
-    <div id="content-main">
-        <form action="" method="post" id="set_password_form">{% csrf_token %}
-            <div>
-                <h1>{% trans 'Social accounts' %}</h1>
-                <ul id="social_accounts" class="list">
-                    {% for social in socials %}
-                        <li class="item social social-{{ social.provider }}">
-                            <a href="http://twitter.com/account/redirect_by_id/{{ social.uid }}"
-                               class="zocial {{ social.provider|replace:"-," }}">
-                                {% if social.uid %}
-                                    {{ social.uid }}
-                                {% else %}
-                                    {{ social.extra_data.user_id }}
-                                {% endif %}
-                            </a>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </div>
-        </form>
+<div id="content-main">
+  <form action="" method="post" id="set_password_form">{% csrf_token %}
+    <div>
+      <h1>{% trans 'Social accounts' %}</h1>
+      <ul id="social_accounts" class="list">
+        {% for social in socials %}
+        <li class="item social social-{{ social.provider }}">
+          <a href="{{ social.uid }}"
+             class="zocial {{ social.provider|replace:'-oauth2,' }}">
+            {% if social.uid %}
+              {{ social.uid }}
+            {% else %}
+              {{ social.extra_data.user_id }}
+            {% endif %}
+          </a>
+        </li>
+        {% endfor %}
+      </ul>
     </div>
+  </form>
+
+  <a class="btn btn-primary" href="{% url 'login' %}">Add social account</a>
+</div>
 
 {% endblock %}

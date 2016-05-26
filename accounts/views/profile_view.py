@@ -1,16 +1,16 @@
-from django.core.urlresolvers import reverse_lazy
-from django.template.response import TemplateResponse
-from django.views.generic.base import TemplateView
-from django.shortcuts import redirect
-from django.utils.decorators import method_decorator
+from django.contrib import messages
 from django.contrib.auth.decorators import login_required
+from django.core.urlresolvers import reverse_lazy
+from django.utils.decorators import method_decorator
+from django.utils.translation import gettext as _
+from django.views.generic.base import TemplateView
 from django.views.generic.edit import FormView
 
 from accounts.forms import UserForm
 
 
 class EditProfileView(FormView):
-    template = "accounts/edit_profile.html"
+    template_name = "accounts/edit_profile.html"
     form_class = UserForm
     success_url = reverse_lazy('accounts:profile')
 
@@ -18,18 +18,20 @@ class EditProfileView(FormView):
     def dispatch(self, request, *args, **kwargs):
         return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 
-    def get_form(self, form_class=None):
-        form_class = self.get_form_class()
-        return form_class(instance=self.request.user)
+    def get_form_kwargs(self):
+        form_kwargs = super(EditProfileView, self).get_form_kwargs()
+        form_kwargs.update(instance=self.request.user)
+        return form_kwargs
 
     def form_valid(self, form):
         form.save()
+        messages.success(self.request, _('User profile has been saved.'))
         return super(EditProfileView, self).form_valid(form)
 
 
 class ProfileView(TemplateView):
     template_name = "accounts/profile.html"
-    editable = False
+    editable = True
 
     @method_decorator(login_required)
     def dispatch(self, request, *args, **kwargs):
@@ -41,3 +43,5 @@ class ProfileView(TemplateView):
             'active_profile': True,
             'editable': self.editable,
         })
+
+        return context

@@ -23,6 +23,7 @@ from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
+import sure
 
 from common.tests.factories.user_factory import UserFactory
 
@@ -198,13 +199,13 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     def login(self, user):
         self.visit(settings.LOGIN_URL)
-        self.find("#id_username").send_keys(user.email)
+        self.find("#id_username").send_keys(user.username)
         self.find("#id_password").send_keys(user.raw_password)
-        self.find("input[type='submit']").click()
-        self.until(lambda: self.browser.page_source.should.contain(user.first_name))  # login successfully
+        self.find("#id_login").click()
+        self.until(lambda: self.browser.page_source.should.contain(user.username))  # login successfully
 
     def logout(self):
-        self.visit(reverse('accounts:logout'))
+        self.visit(reverse('logout'))
 
     def element_exist(self, css_selector):
         try:

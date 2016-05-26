@@ -1,31 +1,34 @@
 {% load i18n %}
 <div class="top-buttons text-right">
-    <a href="#" data-click="expand">{% trans "Expand all" %}</a>
-    |
-    <a href="#" data-click="collapse">{% trans "Collapse all" %}</a>
+  <a href="#" data-click="expand">{% trans "Expand all" %}</a>
+  |
+  <a href="#" data-click="collapse">{% trans "Collapse all" %}</a>
 </div>
 <div class="panel panel-default">
-    <div class="panel-heading">
-        <a data-toggle="collapse" href="#accountMenuBody">
-            {% trans "Accounts" %}
-        </a>
+  <div class="panel-heading">
+    <a data-toggle="collapse" href="#accountMenuBody">
+      {% trans "Accounts" %}
+    </a>
+  </div>
+  <div id="accountMenuBody" class="panel-collapse collapse">
+    <div class="panel-body">
+      <ul class="nav nav-pills nav-stacked">
+        <li {% if active_profile %} class="active" {% endif %}>
+          <a href="{% url 'accounts:profile' %}">{% trans 'Profile' %}</a>
+        </li>
+        {% if request.user.password != '!' %}
+        <li {% if active_changepassword %} class="active" {% endif %}>
+          <a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
+        </li>
+        {% else %}
+        <li {% if active_setpassword %} class="active" {% endif %}>
+          <a href="{% url 'set_user_password' %}">{% trans 'Set password' %}</a>
+        </li>
+        {% endif %}
+        <li>
+          <a href="{% url 'accounts:accounts_social_list' %}">{% trans 'Social account' %}</a>
+        </li>
+      </ul>
     </div>
-    <div id="accountMenuBody" class="panel-collapse collapse">
-        <div class="panel-body">
-            <ul class="nav nav-pills nav-stacked">
-                <li{% if active_profile %} class="active"{% endif %}>
-                    <a href="{% url 'accounts:profile' %}">{% trans 'Profile' %}</a>
-                </li>
-                {% if request.user.password != '!' %}
-                    <li{% if active_changepassword %} class="active"{% endif %}>
-                        <a href="{% url 'accounts:password_change' %}">{% trans 'Change password' %}</a>
-                    </li>
-                {% else %}
-                    <li{% if active_setpassword %} class="active"{% endif %}>
-                        <a href="{% url 'accounts:set_user_password' %}">{% trans 'Set password' %}</a>
-                    </li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
+  </div>
 </div>

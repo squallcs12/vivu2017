@@ -1,8 +1,3 @@
-'''
-Created on Aug 26, 2013
-
-@author: antipro
-'''
 from django.contrib.auth.decorators import login_required
 from django.template.response import TemplateResponse
 from social.apps.django_app.default import models
