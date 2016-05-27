@@ -13,12 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
-from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 
 from common.views.home_view import HomeView
-from root.views import favicon_view
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
@@ -27,8 +25,3 @@ urlpatterns = [
     url(r'^social_auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', HomeView.as_view(), name='index'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += [
-        url(r'^favicon.ico', favicon_view),
-    ]
