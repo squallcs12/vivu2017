@@ -48,6 +48,7 @@ class AccountSetPasswordTestCase(BaseLiveTestCase):
         self.fill_new_password('abc', '123')
         self.should_see_text('The two password fields didn\'t match.')
 
+
 urlpatterns = [
     url(r'^log_to_my_user', AccountSetPasswordTestCase.fake_login_view, name='login_view'),
 ]

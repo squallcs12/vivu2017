@@ -9,6 +9,9 @@ urlpatterns = [
     url(r'^logout/$', views.logout, {'template_name': 'accounts/logged_out.html'}, name='logout'),
     url(r'^password_change/$', views.password_change, {
         'template_name': 'accounts/password_change.html',
+        'extra_context': {
+            'active_changepassword': True,
+        }
     }, name='password_change'),
     url(r'^password_change/done/$', views.password_change_done, {
         'template_name': 'accounts/password_change_done.html'}, name='password_change_done'),

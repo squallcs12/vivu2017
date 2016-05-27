@@ -25,8 +25,8 @@
           <a href="{% url 'set_user_password' %}">{% trans 'Set password' %}</a>
         </li>
         {% endif %}
-        <li>
-          <a href="{% url 'accounts:accounts_social_list' %}">{% trans 'Social account' %}</a>
+        <li {% if active_social_list %} class="active" {% endif %}>
+          <a href="{% url 'accounts:social_list' %}">{% trans 'Social account' %}</a>
         </li>
       </ul>
     </div>

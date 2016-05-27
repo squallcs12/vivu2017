@@ -8,6 +8,7 @@ def main(request, template='accounts/social.html'):
 
     socials = models.UserSocialAuth.objects.filter(user=request.user)
     data['socials'] = socials
+    data['active_social_list'] = True
 
     return TemplateResponse(request, template, data)
 

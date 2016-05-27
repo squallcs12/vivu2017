@@ -9,7 +9,7 @@ class SocialAccountTestCase(BaseLiveTestCase):
         self.visit(reverse('accounts:profile'))
         self.link('Expand all').click()
         self.link('Social account').click()
-        self.until(lambda: self.assertIn(reverse('accounts:accounts_social_list'), self.browser.current_url))
+        self.until(lambda: self.assertIn(reverse('accounts:social_list'), self.browser.current_url))
 
     def link_new_social_account(self):
         self.login_user()

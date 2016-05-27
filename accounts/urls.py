@@ -12,5 +12,5 @@ urlpatterns = [
     url(r'^set_password', set_password_view.main, name='set_user_password'),
     url(r'^password_set/done/$', set_password_view.done, name='password_set_done'),
 
-    url(r'^social', social_view.main, name='accounts_social_list'),
+    url(r'^social', social_view.main, name='social_list'),
 ]
