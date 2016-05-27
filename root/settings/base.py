@@ -16,7 +16,7 @@ import os
 import dj_database_url
 from django.core.urlresolvers import reverse_lazy
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
@@ -150,8 +150,6 @@ SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 SITE_NAME = "Django"
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
-
-EMAIL_HOST = 'localhost'
 
 LOGIN_URL = reverse_lazy('login')
 LOGIN_ERROR_URL = reverse_lazy('login')
