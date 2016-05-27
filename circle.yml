@@ -1,4 +1,6 @@
 machine:
+  python:
+    version: 2.7.10
   environment:
     RUNNING_ENV: circle_ci
     RDS_DBNAME: circle_test
@@ -7,4 +9,6 @@ machine:
 
 test:
   override:
-    - python manage.py test
+    - coverage run manage.py test
+  post:
+    - python script/coverage_script.py
