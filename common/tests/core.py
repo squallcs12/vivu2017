@@ -103,6 +103,15 @@ class UserTestBaseMixin(object):
         self.login(user)
 
 
+class TestDescriptionOverride:
+    def __str__(self):
+        return "{module}:{klass}.{method}".format(
+            module=self.__class__.__module__,
+            klass=self.__class__.__name__,
+            method=self._testMethodName,
+        )
+
+
 class ChangeBrowserContext(object):
     def __init__(self, browser):
         self.browser = world.browser
@@ -115,7 +124,7 @@ class ChangeBrowserContext(object):
         world.browser = self.browser
 
 
-class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
+class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBaseMixin):
     source = 0
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')
     node_server_thread = None
@@ -164,10 +173,6 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
 
     @classmethod
     def setUpClass(cls):
-        if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
-            management.call_command('collectstatic', interactive=False, verbosity=0)
-            LiveServerTestCase.static_collected = True
-
         super(BaseLiveTestCase, cls).setUpClass()
 
     @classmethod
@@ -332,7 +337,7 @@ class BaseLiveTestCase(LiveServerTestCase, UserTestBaseMixin):
         self.until(self.ajax_complete)
 
 
-class SimpleTestCase(DjangoSimpleTestCase, UserTestBaseMixin):
+class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBaseMixin):
     response = None
     _soup = None
 
