@@ -11,23 +11,31 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
+import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import dj_database_url
 from django.core.urlresolvers import reverse_lazy
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+env = environ.Env(
+        DEBUG=(bool, True),
+        SECRET_KEY=(str, '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'),
+    )
+env.read_env('.env')
 
+# BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+root = environ.Path(__file__) - 3
+BASE_DIR = root()
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv('SECRET_KEY', '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka')
+SECRET_KEY = env('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = (os.getenv('DEBUG') != 'False')
+DEBUG = env('DEBUG')
 
-ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS')
+ALLOWED_HOSTS = env('ALLOWED_HOSTS')
 ALLOWED_HOSTS = ALLOWED_HOSTS.split(',') if ALLOWED_HOSTS else []
 
 # Application definition
@@ -85,7 +93,7 @@ WSGI_APPLICATION = 'root.wsgi.application'
 # https://docs.djangoproject.com/en/1.9/ref/settings/#databases
 
 DATABASES = {
-    'default': dj_database_url.config()
+    'default': env.db()
 }
 
 # Password validation

@@ -10,3 +10,4 @@ env.sh
 .coverage
 htmlcov/
 /static/
+.env
