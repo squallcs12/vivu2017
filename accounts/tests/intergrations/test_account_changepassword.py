@@ -15,10 +15,14 @@ class AccountChangePasswordTestCase(BaseLiveTestCase):
 
     def test_show_changepassword_view(self):
         self.visit(reverse('accounts:profile'))
-        self.link('Expand all').click()
-        self.link('Change password').click()
 
+        if not self.link('Change password').is_displayed():
+            self.link('Expand all').click()
+            self.until(lambda: self.link('Change password').is_displayed())
+
+        self.link('Change password').click()
         self.until(lambda: self.assertIn(reverse('password_change'), self.browser.current_url))
+
         self.should_see_text('Change password')
 
     def test_wrong_old_password(self):

@@ -7,7 +7,9 @@ from common.tests.factories.user_social_factory import UserSocialAuthFactory
 class SocialAccountTestCase(BaseLiveTestCase):
     def visit_social_list_view(self):
         self.visit(reverse('accounts:profile'))
-        self.link('Expand all').click()
+        if not self.link('Social account').is_displayed():
+            self.link('Expand all').click()
+            self.until(lambda: self.link('Social account').is_displayed())
         self.link('Social account').click()
         self.until(lambda: self.assertIn(reverse('accounts:social_list'), self.browser.current_url))
 

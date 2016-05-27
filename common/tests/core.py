@@ -173,6 +173,9 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
 
     @classmethod
     def setUpClass(cls):
+        if not hasattr(LiveServerTestCase, 'static_collected') or not LiveServerTestCase.static_collected:
+            management.call_command('collectstatic', interactive=False, verbosity=0)
+            LiveServerTestCase.static_collected = True
         super(BaseLiveTestCase, cls).setUpClass()
 
     @classmethod
@@ -267,10 +270,12 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
             raise
 
     @classmethod
-    def take_screen_shot(cls):
+    def take_screen_shot(cls, folder=None):
         if cls.source_dir:
             BaseLiveTestCase.source += 1
-            dir_path = os.path.join(cls.source_dir, str(BaseLiveTestCase.source))
+            if folder is None:
+                folder = BaseLiveTestCase.source
+            dir_path = os.path.join(cls.source_dir, str(folder))
             if not os.path.isdir(dir_path):
                 os.mkdir(dir_path)
             for index, browser in enumerate(world.browsers):
@@ -376,11 +381,11 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
 
 class DjangoNoseTextTestResult(TextTestResult):
     def addError(self, test, err):
-        BaseLiveTestCase.take_screen_shot()
+        BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
         super(DjangoNoseTextTestResult, self).addError(test, err)
 
     def addFailure(self, test, err):
-        BaseLiveTestCase.take_screen_shot()
+        BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
         super(DjangoNoseTextTestResult, self).addFailure(test, err)
 
     def addSuccess(self, test):

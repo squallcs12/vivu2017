@@ -8,6 +8,6 @@ machine:
 
 test:
   override:
-    - coverage run manage.py test
+    - coverage run manage.py test --nologcapture -x
   post:
     - python scripts/coverage_script.py

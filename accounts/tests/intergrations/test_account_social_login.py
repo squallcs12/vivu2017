@@ -29,7 +29,7 @@ class AccountSocialLoginTestCase(BaseLiveTestCase):
         self.should_see_text('Sign in with your Google Account')
 
     def test_twitter(self):
-        self.browser.get('http://localhost.com:8000{path}'.format(path=reverse('login')))
+        self.visit(reverse('login'))
         self.find('#twitter').click()
         self.until(lambda: self.assertIn('twitter', self.browser.current_url))
 
