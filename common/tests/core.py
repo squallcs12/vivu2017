@@ -377,17 +377,18 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
 class DjangoNoseTextTestResult(TextTestResult):
     def addError(self, test, err):
         BaseLiveTestCase.take_screen_shot()
-        BaseLiveTestCase.close_browsers()
         super(DjangoNoseTextTestResult, self).addError(test, err)
 
     def addFailure(self, test, err):
         BaseLiveTestCase.take_screen_shot()
-        BaseLiveTestCase.close_browsers()
         super(DjangoNoseTextTestResult, self).addFailure(test, err)
 
     def addSuccess(self, test):
-        BaseLiveTestCase.close_browsers()
         super(DjangoNoseTextTestResult, self).addSuccess(test)
+
+    def printSummary(self, start, stop):
+        super(DjangoNoseTextTestResult, self).printSummary(start, stop)
+        BaseLiveTestCase.close_browsers()
 
 
 class DjangoNoseTextTestRunner(TextTestRunner):
