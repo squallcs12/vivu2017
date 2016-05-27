@@ -39,3 +39,4 @@ six==1.10.0
 sure==1.2.24
 termcolor==1.1.0
 traitlets==4.2.1
+whitenoise==3.1
