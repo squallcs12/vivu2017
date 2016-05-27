@@ -22,12 +22,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__fil
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'
+SECRET_KEY = os.getenv('SECRET_KEY', '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = (os.getenv('DEBUG') != 'False')
 
-ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS').split(',')
 
 # Application definition
 
@@ -147,7 +147,7 @@ SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 200
 SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 135
 SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
 
-SITE_NAME = "Django"
+SITE_NAME = os.getenv('SITE_NAME', 'Django')
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 
