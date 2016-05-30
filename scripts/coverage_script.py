@@ -1,3 +1,6 @@
+"""
+Run coverall report if have config
+"""
 import os
 
 if os.getenv('COVERAGE_ENABLE', None):

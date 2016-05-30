@@ -10,6 +10,19 @@ from django.contrib.auth.models import User
 
 
 def redirect_associate_by_email(details, user=None, *args, **kwargs):
+    """
+    Python social auth pipeline
+    Auto connect same email of social accounts
+    @param details: user information
+    @type details: dict
+    @param user: user object
+    @type user: common.models.User
+    @param args: argument list
+    @type args: list
+    @param kwargs: keyword arguments
+    @type kwargs: dict
+    @return: HttpResponseRedirect
+    """
     if user:
         return None
 
