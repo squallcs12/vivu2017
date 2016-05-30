@@ -1,7 +1,8 @@
 from django.conf.urls import url
 
 from accounts.views import set_password_view, social_view
-from accounts.views.profile_view import EditProfileView, ProfileView
+from accounts.views.edit_profile_view import EditProfileView
+from accounts.views.profile_view import ProfileView
 
 
 urlpatterns = [
