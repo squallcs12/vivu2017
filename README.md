@@ -14,3 +14,8 @@ Init django project with user accounts, social login, correct settings
 - Multiple settings module
 - Heroku deployment available
 - User account / profile
+
+
+# Celery start
+
+celery -A root worker -l info
