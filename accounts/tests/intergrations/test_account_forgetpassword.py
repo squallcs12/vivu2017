@@ -11,7 +11,7 @@ class AccountForgetPasswordTestCase(BaseLiveTestCase):
         self.button('Reset password').click()
 
     def test_show_forgetpassword_view(self):
-        self.visit(reverse('login'))
+        self.visit_login_page()
         self.link('Forgot your password?').click()
 
         self.until(lambda: self.assertIn(reverse('password_reset'), self.browser.current_url))

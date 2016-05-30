@@ -7,7 +7,7 @@ from common.tests.factories.user_factory import UserFactory
 class AccountEditProfile(BaseLiveTestCase):
     def test_visit_profile_without_login(self):
         self.visit(reverse('accounts:edit_profile'))
-        self.until(lambda: self.assertIn(reverse('login'), self.browser.current_url))
+        self.until_current_url_contains(self.settings.LOGIN_URL)
         self.should_see_text('Log in with your website account')
 
     def visit_edit_profile(self):

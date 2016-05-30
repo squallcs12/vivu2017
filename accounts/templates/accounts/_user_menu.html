@@ -1,4 +1,4 @@
-{% load i18n %}
+{% load i18n common_filters %}
 <div class="top-buttons text-right">
   <a href="#" data-click="expand">{% trans "Expand all" %}</a>
   |
@@ -13,21 +13,15 @@
   <div id="accountMenuBody" class="panel-collapse collapse">
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked">
-        <li {% if active_profile %} class="active" {% endif %}>
-          <a href="{% url 'accounts:profile' %}">{% trans 'Profile' %}</a>
-        </li>
-        {% if request.user.password != '!' %}
-        <li {% if active_changepassword %} class="active" {% endif %}>
-          <a href="{% url 'password_change' %}">{% trans 'Change password' %}</a>
-        </li>
+        {% include "accounts/_user_menu_item.html" with url_name='accounts:profile' item_name='Profile' %}
+        {% if user.has_usable_password %}
+          {% include "accounts/_user_menu_item.html" with url_name='password_change' item_name='Change password' %}
         {% else %}
-        <li {% if active_setpassword %} class="active" {% endif %}>
-          <a href="{% url 'set_user_password' %}">{% trans 'Set password' %}</a>
-        </li>
+          {% include "accounts/_user_menu_item.html" with url_name='accounts:set_user_password' item_name='Set password' %}
         {% endif %}
-        <li {% if active_social_list %} class="active" {% endif %}>
-          <a href="{% url 'accounts:social_list' %}">{% trans 'Social account' %}</a>
-        </li>
+        {% include "accounts/_user_menu_item.html" with url_name='accounts:social_list' item_name='Social account' %}
+        {% include "accounts/_user_menu_item.html" with url_name='two_factor:profile' item_name='Two-factor settings' %}
+
       </ul>
     </div>
   </div>

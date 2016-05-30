@@ -1,3 +1,4 @@
+from django.core.urlresolvers import reverse
 from django.template import Library
 
 register = Library()
@@ -17,3 +18,8 @@ def replace(var, args):
         return False
     old, new = args.split(',')
     return var.replace(old, new)
+
+
+@register.filter
+def is_current_page(request, url_name):
+    return request.path == reverse(url_name)

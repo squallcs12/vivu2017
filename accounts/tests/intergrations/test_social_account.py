@@ -25,7 +25,7 @@ class SocialAccountTestCase(BaseLiveTestCase):
 
     def test_button_add_social_account(self):
         self.link_new_social_account()
-        self.until(lambda: self.assertIn(reverse('login'), self.browser.current_url))
+        self.until_current_url_contains(self.settings.LOGIN_URL)
 
     def test_show_social_account_list(self):
         self.login_user()

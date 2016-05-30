@@ -51,6 +51,10 @@ INSTALLED_APPS = [
     'django_extensions',
     'social.apps.django_app.default',
     'postman',
+    'django_otp',
+    'django_otp.plugins.otp_static',
+    'django_otp.plugins.otp_totp',
+    'two_factor',
 
     'accounts',
     'common',
@@ -62,6 +66,7 @@ MIDDLEWARE_CLASSES = [
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
+    'django_otp.middleware.OTPMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -160,5 +165,6 @@ SITE_NAME = os.getenv('SITE_NAME', 'Django')
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 
-LOGIN_URL = reverse_lazy('login')
-LOGIN_ERROR_URL = reverse_lazy('login')
+LOGIN_URL = reverse_lazy('two_factor:login')
+LOGIN_ERROR_URL = reverse_lazy('two_factor:login')
+LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')

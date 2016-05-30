@@ -2,10 +2,6 @@ from django.conf.urls import url
 from django.contrib.auth import views
 
 urlpatterns = [
-    url(r'^login/$', views.login, {
-        'template_name': 'accounts/login.html',
-        'extra_context': {},
-    }, name='login'),
     url(r'^logout/$', views.logout, {'template_name': 'accounts/logged_out.html'}, name='logout'),
     url(r'^password_change/$', views.password_change, {
         'template_name': 'accounts/password_change.html',

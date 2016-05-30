@@ -314,6 +314,9 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         """
         self.assertNotIn(text, self.find('body').text)
 
+    def visit_login_page(self):
+        self.visit(settings.LOGIN_URL)
+
     def login(self, user):
         """
         Login user into system using browser
@@ -321,10 +324,10 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         @type user: common.models.User
         @return: None
         """
-        self.visit(settings.LOGIN_URL)
-        self.find("#id_username").send_keys(user.username)
-        self.find("#id_password").send_keys(user.raw_password)
-        self.find("#id_login").click()
+        self.visit_login_page()
+        self.find("#id_auth-username").send_keys(user.username)
+        self.find("#id_auth-password").send_keys(user.raw_password)
+        self.button("Next").click()
         self.until(lambda: self.browser.page_source.should.contain(user.username))  # login successfully
 
     def logout(self):
@@ -565,6 +568,13 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         @raise TimeoutException
         """
         self.until(self.ajax_complete)
+
+    def until_current_url_contains(self, url):
+        self.until(lambda: str(url) in self.browser.current_url)
+
+    @property
+    def settings(self):
+        return settings
 
 
 class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBaseMixin):
