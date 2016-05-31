@@ -15,6 +15,7 @@ Init django project with user accounts, social login, correct settings
 - Heroku deployment available
 - User account / profile
 - Two factor authentication
+- Celery Email
 
 
 # Celery start

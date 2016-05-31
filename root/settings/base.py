@@ -55,6 +55,7 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
     'two_factor',
+    'djcelery_email',
 
     'accounts',
     'common',
@@ -168,3 +169,5 @@ TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 LOGIN_URL = reverse_lazy('two_factor:login')
 LOGIN_ERROR_URL = reverse_lazy('two_factor:login')
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')
+
+EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
