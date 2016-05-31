@@ -1,11 +1,14 @@
-from django.core.urlresolvers import reverse
-
 from common.tests.core import BaseLiveTestCase
 
 
 class AccountSocialLoginTestCase(BaseLiveTestCase):
     def setUp(self):
         self.visit_login_page()
+
+    @classmethod
+    def setUpClass(cls):
+        with cls.in_environment(DJANGO_LIVE_TEST_SERVER_ADDRESS='localhost:8180'):
+            super(AccountSocialLoginTestCase, cls).setUpClass()
 
     def test_login_facebook(self):
         self.find('#facebook').click()

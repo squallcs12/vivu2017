@@ -180,10 +180,24 @@ class ChangeBrowserContext:
         world.browser = self.browser
 
 
+class InEnvironmentContext:
+    def __init__(self, **kwargs):
+        self.old_environ = os.environ.copy()
+        self.kwargs = kwargs
+
+    def __enter__(self):
+        os.environ.update(self.kwargs)
+
+    def __exit__(self, exc_type, exc_val, exc_tb):
+        os.environ = self.old_environ
+
+
 class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBaseMixin):
     source = 0  # class counter
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')  # get circle ci artifacts folder
-    need_to_tear_down_class = True  # skip class tear down method in case of needed
+    terminate_test_server_after_test = False
+    """Skip tear down class method, this will keep the server thread open until the test end
+    But it also will reduce about 5 seconds when switching test class"""
 
     @classmethod
     def close_browsers(cls):
@@ -255,9 +269,9 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         super(BaseLiveTestCase, cls).setUpClass()
 
     @classmethod
-    def tearDownClass(cls):
-        if cls.need_to_tear_down_class:
-            super(BaseLiveTestCase, cls).tearDownClass()
+    def _tearDownClassInternal(cls):
+        if cls.terminate_test_server_after_test:
+            super(BaseLiveTestCase, cls)._tearDownClassInternal()
 
     def visit(self, page):
         """
@@ -575,6 +589,10 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
     @property
     def settings(self):
         return settings
+
+    @staticmethod
+    def in_environment(**kwargs):
+        return InEnvironmentContext(**kwargs)
 
 
 class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBaseMixin):

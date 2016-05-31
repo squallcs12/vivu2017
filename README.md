@@ -19,3 +19,8 @@ Init django project with user accounts, social login, correct settings
 # Celery start
 
 celery -A root worker -l info
+
+
+# Note
+
+Social login test will be run on server address `localhost:8180`
