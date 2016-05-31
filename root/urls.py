@@ -20,9 +20,9 @@ from common.views.home_view import HomeView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^account/', include('accounts.urls', namespace='accounts')),
-    url(r'^account/', include('accounts.auth_urls')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
+    url(r'^accounts/', include('accounts.auth_urls')),
+    url(r'^accounts/', include('allauth.urls')),
     url(r'', include('two_factor.urls', 'two_factor')),
-    url(r'^social_auth/', include('social.apps.django_app.urls', namespace='social')),
     url(r'^$', HomeView.as_view(), name='index'),
 ]

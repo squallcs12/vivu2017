@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-{% load i18n two_factor %}
+{% load i18n two_factor socialaccount %}
 
 {% block head-link %}
 {{ block.super }}
@@ -79,18 +79,7 @@
         <p>{% trans 'Associate your account with social network account:' %}</p>
         {% endif %}
         <div id="social_login">
-          <a href="{% url 'social:begin' 'facebook' %}?next={{ next }}" class="zocial facebook"
-             id="facebook" title="{% trans 'Login with your Facebook account' %}">
-            {% trans 'Facebook' %}
-          </a>
-          <a href="{% url 'social:begin' 'twitter' %}?next={{ next }}" class="zocial twitter"
-             id="twitter" title="{% trans 'Login with your Twitter account' %}">
-            {% trans 'Twitter' %}
-          </a>
-          <a href="{% url 'social:begin' 'google-oauth2' %}?next={{ next }}" class="zocial googleplus"
-             id="google" title="{% trans 'Login with your Google account' %}">
-            {% trans 'Google' %}
-          </a>
+          {% include "socialaccount/snippets/provider_list.html" with process="login" %}
         </div>
       </div>
     </div>

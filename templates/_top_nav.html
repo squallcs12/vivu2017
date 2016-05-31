@@ -38,7 +38,7 @@
         </li>
         {% else %}
         <li>
-          <a href="{% url 'two_factor:login' %}{% if request.path != '/accounts/logout/' %}?next={{ request.path }}{% endif %}">
+          <a href="{% url 'two_factor:login' %}">
             {% trans "Log in" %}
           </a>
         </li>

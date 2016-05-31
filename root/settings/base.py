@@ -21,6 +21,7 @@ env = environ.Env(
         DEBUG=(bool, True),
         SECRET_KEY=(str, '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'),
     )
+ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
 
 # BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -47,6 +48,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    # The Django sites framework is required
+    'django.contrib.sites',
 
     'django_extensions',
     'social.apps.django_app.default',
@@ -56,6 +59,12 @@ INSTALLED_APPS = [
     'django_otp.plugins.otp_totp',
     'two_factor',
     'djcelery_email',
+    'allauth',
+    'allauth.account',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.facebook',
+    'allauth.socialaccount.providers.google',
+    'allauth.socialaccount.providers.twitter',
 
     'accounts',
     'common',
@@ -140,29 +149,8 @@ STATIC_URL = '/static/'
 
 AUTH_USER_MODEL = 'accounts.User'
 
-# social auth
-
-AUTHENTICATION_BACKENDS = (
-    'social.backends.google.GoogleOAuth2',
-    'social.backends.twitter.TwitterOAuth',
-    'social.backends.facebook.FacebookOAuth2',
-    'django.contrib.auth.backends.ModelBackend',
-)
-SOCIAL_AUTH_TWITTER_KEY = os.getenv('SOCIAL_AUTH_TWITTER_KEY')
-SOCIAL_AUTH_TWITTER_SECRET = os.getenv('SOCIAL_AUTH_TWITTER_SECRET')
-SOCIAL_AUTH_FACEBOOK_KEY = os.getenv('SOCIAL_AUTH_FACEBOOK_KEY')
-SOCIAL_AUTH_FACEBOOK_SECRET = os.getenv('SOCIAL_AUTH_FACEBOOK_SECRET')
-SOCIAL_AUTH_FACEBOOK_SCOPE = []
-SOCIAL_AUTH_GOOGLE_OAUTH2_KEY = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_KEY')
-SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET = os.getenv('SOCIAL_AUTH_GOOGLE_OAUTH2_SECRET')
-SOCIAL_AUTH_NEW_USER_REDIRECT_URL = reverse_lazy('accounts:set_user_password')
-
-SOCIAL_AUTH_UID_LENGTH = 222
-SOCIAL_AUTH_NONCE_SERVER_URL_LENGTH = 200
-SOCIAL_AUTH_ASSOCIATION_SERVER_URL_LENGTH = 135
-SOCIAL_AUTH_ASSOCIATION_HANDLE_LENGTH = 125
-
 SITE_NAME = os.getenv('SITE_NAME', 'Django')
+SITE_ID = 1
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 

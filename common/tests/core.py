@@ -591,6 +591,10 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         return settings
 
     @staticmethod
+    def env(name, default=None):
+        return settings.ENV(name, default=default)
+
+    @staticmethod
     def in_environment(**kwargs):
         return InEnvironmentContext(**kwargs)
 
