@@ -1,17 +1,14 @@
 from django.core.urlresolvers import reverse
 
-from common.tests.core import BaseLiveTestCase
+from accounts.tests.intergrations.base import AccountTestBase
 from common.tests.factories.user_social_factory import UserSocialAuthFactory
 
 
-class SocialAccountTestCase(BaseLiveTestCase):
+class SocialAccountTestCase(AccountTestBase):
     def visit_social_list_view(self):
-        self.visit(reverse('accounts:profile'))
-        if not self.link('Social account').is_displayed():
-            self.link('Expand all').click()
-            self.until(lambda: self.link('Social account').is_displayed())
-        self.link('Social account').click()
-        self.until(lambda: self.assertIn(reverse('accounts:social_list'), self.browser.current_url))
+        self.visit_profile()
+        self.click_account_menu_item('Social account')
+        self.until_current_url_contains(reverse('accounts:social_list'))
 
     def link_new_social_account(self):
         self.login_user()

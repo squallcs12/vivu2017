@@ -1,9 +1,9 @@
 from django.core.urlresolvers import reverse
 
-from common.tests.core import BaseLiveTestCase
+from accounts.tests.intergrations.base import AccountTestBase
 
 
-class AccountChangePasswordTestCase(BaseLiveTestCase):
+class AccountChangePasswordTestCase(AccountTestBase):
     def setUp(self):
         self.login_user()
 
@@ -14,13 +14,9 @@ class AccountChangePasswordTestCase(BaseLiveTestCase):
         self.button('Change password').click()
 
     def test_show_changepassword_view(self):
-        self.visit(reverse('accounts:profile'))
+        self.visit_profile()
+        self.click_account_menu_item('Change password')
 
-        if not self.link('Change password').is_displayed():
-            self.link('Expand all').click()
-            self.until(lambda: self.link('Change password').is_displayed())
-
-        self.link('Change password').click()
         self.until(lambda: self.assertIn(reverse('password_change'), self.browser.current_url))
 
         self.should_see_text('Change password')
