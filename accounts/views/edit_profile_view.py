@@ -6,16 +6,13 @@ from django.utils.translation import gettext as _
 from django.views.generic.edit import FormView
 
 from accounts.forms import UserForm
+from accounts.views.login_required_mixin import LoginRequiredMixin
 
 
-class EditProfileView(FormView):
+class EditProfileView(LoginRequiredMixin, FormView):
     template_name = "accounts/edit_profile.html"
     form_class = UserForm
     success_url = reverse_lazy('accounts:profile')
-
-    @method_decorator(login_required)
-    def dispatch(self, request, *args, **kwargs):
-        return super(EditProfileView, self).dispatch(request, *args, **kwargs)
 
     def get_form_kwargs(self):
         form_kwargs = super(EditProfileView, self).get_form_kwargs()
@@ -26,4 +23,3 @@ class EditProfileView(FormView):
         form.save()
         messages.success(self.request, _('User profile has been saved.'))
         return super(EditProfileView, self).form_valid(form)
-

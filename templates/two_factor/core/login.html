@@ -38,7 +38,7 @@
               enter one of these backup tokens to login to your account.{% endblocktrans %}</p>
           {% endif %}
 
-          <form action="" method="post">{% csrf_token %}
+          <form action="" class="form-horizontal" method="post">{% csrf_token %}
             {% include "two_factor/_wizard_forms.html" %}
 
             {# hidden submit button to enable [enter] key #}
@@ -63,7 +63,7 @@
             {% endif %}
 
             {% include "two_factor/_wizard_actions.html" %}
-            <p><a href="{% url 'password_reset' %}">{% trans "Forgot your password?" %}</a></p>
+            <p><a href="{% url 'account_reset_password' %}">{% trans "Forgot your password?" %}</a></p>
           </form>
         {% else %}
         <p>{% trans 'You are currently logged in as' %} {{ request.user.first_name }} {{ request.user.last_name }}</p>
@@ -71,18 +71,7 @@
       </div>
     </div>
 
-    <div class="col-lg-6">
-      <div class="well">
-        {% if not user.is_authenticated %}
-        <p>{% trans 'Or log in with your social network account:' %}</p>
-        {% else %}
-        <p>{% trans 'Associate your account with social network account:' %}</p>
-        {% endif %}
-        <div id="social_login">
-          {% include "socialaccount/snippets/provider_list.html" with process="login" %}
-        </div>
-      </div>
-    </div>
+    {% include '_account_social_login.html' %}
   </div>
 </div>
 {% endblock %}

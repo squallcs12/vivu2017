@@ -14,7 +14,6 @@ import os
 import environ
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
-import dj_database_url
 from django.core.urlresolvers import reverse_lazy
 
 env = environ.Env(
@@ -52,8 +51,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'django_extensions',
-    'social.apps.django_app.default',
-    'postman',
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
@@ -80,7 +77,6 @@ MIDDLEWARE_CLASSES = [
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'social.apps.django_app.middleware.SocialAuthExceptionMiddleware',
 ]
 
 ROOT_URLCONF = 'root.urls'
@@ -158,4 +154,8 @@ LOGIN_URL = reverse_lazy('two_factor:login')
 LOGIN_ERROR_URL = reverse_lazy('two_factor:login')
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')
 
-EMAIL_BACKEND = 'djcelery_email.backends.CeleryEmailBackend'
+vars().update(env.email(backend='djcelery_email.backends.CeleryEmailBackend'))
+DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
+
+ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
+ACCOUNT_EMAIL_REQUIRED = True

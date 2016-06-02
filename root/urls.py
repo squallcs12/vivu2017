@@ -20,9 +20,8 @@ from common.views.home_view import HomeView
 
 urlpatterns = [
     url(r'^admin/', admin.site.urls),
-    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-    url(r'^accounts/', include('accounts.auth_urls')),
     url(r'^accounts/', include('allauth.urls')),
+    url(r'^accounts/', include('accounts.urls', namespace='accounts')),
     url(r'', include('two_factor.urls', 'two_factor')),
     url(r'^$', HomeView.as_view(), name='index'),
 ]

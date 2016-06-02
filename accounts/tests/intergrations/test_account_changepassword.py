@@ -1,48 +1,39 @@
 from django.core.urlresolvers import reverse
 
-from accounts.tests.intergrations.base import AccountTestBase
+from accounts.tests.intergrations.base import AccountTestBase, FillPasswordFormMixin
 
 
-class AccountChangePasswordTestCase(AccountTestBase):
+class AccountChangePasswordTestCase(FillPasswordFormMixin, AccountTestBase):
     def setUp(self):
         self.login_user()
 
     def submit_change_password_form(self, old_pw, new_pw, confirm_pw):
-        self.fill_in('#id_old_password', old_pw)
-        self.fill_in('#id_new_password1', new_pw)
-        self.fill_in('#id_new_password2', confirm_pw)
-        self.button('Change password').click()
+        self.fill_in('#id_oldpassword', old_pw)
+        self.fill_password(new_pw, confirm_pw)
+        self.button('Change Password').click()
 
     def test_show_changepassword_view(self):
         self.visit_profile()
         self.click_account_menu_item('Change password')
-
-        self.until(lambda: self.assertIn(reverse('password_change'), self.browser.current_url))
-
-        self.should_see_text('Change password')
+        self.check_navigation_and_see_text(reverse('account_change_password'), 'Change Password')
 
     def test_wrong_old_password(self):
-        self.visit(reverse('password_change'))
+        self.visit(reverse('account_change_password'))
 
         self.submit_change_password_form('invalid', '123', '123')
-        self.should_see_text('Your old password was entered incorrectly. Please enter it again.')
+        self.should_see_text('Please type your current password.')
+
+    def assert_password_validation(self, password, confirm_password, message):
+        self.visit(reverse('account_change_password'))
+
+        self.submit_change_password_form(self.user.raw_password, password, confirm_password)
+        self.should_see_text(message)
 
     def test_new_password_not_match(self):
-        self.visit(reverse('password_change'))
-
-        self.submit_change_password_form(self.user.raw_password, 'abcABC123!', 'abcABC')
-        self.should_see_text('The two password fields didn\'t match.')
+        self.assert_password_validation('abcABC123!', 'abcABC', 'You must type the same password each time.')
 
     def test_new_password_weak(self):
-        self.visit(reverse('password_change'))
-
-        self.submit_change_password_form(self.user.raw_password, 'abc123', 'abc123')
-        self.should_see_text('This password is too short. It must contain at least 8 characters.')
+        self.assert_password_validation('123', '123', 'Password must be a minimum of 6 characters.')
 
     def test_change_password_success(self):
-        self.visit(reverse('password_change'))
-
-        self.submit_change_password_form(self.user.raw_password, 'abcdABC123!', 'abcdABC123!')
-
-        self.until(lambda: self.assertIn(reverse('password_change_done'), self.browser.current_url))
-        self.should_see_text('Password change successful')
+        self.assert_password_validation('abcdABC123!', 'abcdABC123!', 'Password successfully changed.')

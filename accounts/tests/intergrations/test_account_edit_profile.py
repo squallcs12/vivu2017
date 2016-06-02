@@ -1,10 +1,10 @@
 from django.core.urlresolvers import reverse
 
-from common.tests.core import BaseLiveTestCase
+from accounts.tests.intergrations.base import AccountTestBase
 from common.tests.factories.user_factory import UserFactory
 
 
-class AccountEditProfile(BaseLiveTestCase):
+class AccountEditProfile(AccountTestBase):
     def test_visit_profile_without_login(self):
         self.visit(reverse('accounts:edit_profile'))
         self.until_current_url_contains(self.settings.LOGIN_URL)
@@ -16,8 +16,7 @@ class AccountEditProfile(BaseLiveTestCase):
 
     def test_show_edit_profile_view(self):
         self.visit_edit_profile()
-        self.until(lambda: self.assertIn(reverse('accounts:edit_profile'), self.browser.current_url))
-        self.should_see_text('Edit profile')
+        self.check_navigation_and_see_text(reverse('accounts:edit_profile'), 'Edit profile')
 
     def test_show_initial_profile(self):
         self.visit_edit_profile()

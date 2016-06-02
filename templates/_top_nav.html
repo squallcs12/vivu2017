@@ -33,10 +33,15 @@
                 {% trans "Profile" %}
               </a>
             </li>
-            <li><a class="logout" href="{% url 'logout' %}">{% trans 'Log out' %}</a></li>
+            <li><a class="logout" href="{% url 'account_logout' %}">{% trans 'Log out' %}</a></li>
           </ul>
         </li>
         {% else %}
+        <li>
+          <a href="{% url 'account_signup' %}">
+            {% trans "Sign up" %}
+          </a>
+        </li>
         <li>
           <a href="{% url 'two_factor:login' %}">
             {% trans "Log in" %}

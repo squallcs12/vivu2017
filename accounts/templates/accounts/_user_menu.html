@@ -14,12 +14,15 @@
     <div class="panel-body">
       <ul class="nav nav-pills nav-stacked">
         {% include "accounts/_user_menu_item.html" with url_name='accounts:profile' item_name='Profile' %}
+
         {% if user.has_usable_password %}
-          {% include "accounts/_user_menu_item.html" with url_name='password_change' item_name='Change password' %}
+          {% include "accounts/_user_menu_item.html" with url_name='account_change_password' item_name='Change password' %}
         {% else %}
-          {% include "accounts/_user_menu_item.html" with url_name='accounts:set_user_password' item_name='Set password' %}
+          {% include "accounts/_user_menu_item.html" with url_name='account_set_password' item_name='Set password' %}
         {% endif %}
-        {% include "accounts/_user_menu_item.html" with url_name='accounts:social_list' item_name='Social account' %}
+
+        {% include "accounts/_user_menu_item.html" with url_name='socialaccount_connections' item_name='Social connection' %}
+
         {% include "accounts/_user_menu_item.html" with url_name='two_factor:profile' item_name='Two-factor settings' %}
 
       </ul>
