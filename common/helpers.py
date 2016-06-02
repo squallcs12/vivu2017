@@ -1,8 +1,3 @@
-'''
-Created on Sep 14, 2013
-
-@author: antipro
-'''
 import json
 from django.conf import settings
 

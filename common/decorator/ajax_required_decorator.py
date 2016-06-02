@@ -1,8 +1,3 @@
-'''
-Created on Aug 8, 2013
-
-@author: antipro
-'''
 from django.http import HttpResponseBadRequest
 
 
