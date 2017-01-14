@@ -11,3 +11,5 @@ env.sh
 htmlcov/
 /static/
 .env
+ghostdriver.log
+sqlite.db

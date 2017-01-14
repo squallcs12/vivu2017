@@ -17,9 +17,13 @@ import environ
 from django.core.urlresolvers import reverse_lazy
 
 env = environ.Env(
-        DEBUG=(bool, True),
-        SECRET_KEY=(str, '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'),
-    )
+    DEBUG=(bool, True),
+    SECRET_KEY=(str, '#3pw2ogg-#q7r%abn2sy+zsaqnek2tp7g@ke+za46)#hb+pbka'),
+    ALLOWED_HOSTS=(str, ''),
+    DATABASE_URL=(str, 'sqlite:///sqlite.db'),
+    EMAIL_URL=(str, ''),
+    DEFAULT_FROM_EMAIL=(str, 'admin@domain.com')
+)
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
 
@@ -54,7 +58,6 @@ INSTALLED_APPS = [
     'django_otp',
     'django_otp.plugins.otp_static',
     'django_otp.plugins.otp_totp',
-    'two_factor',
     'djcelery_email',
     'allauth',
     'allauth.account',
@@ -67,13 +70,12 @@ INSTALLED_APPS = [
     'common',
 ]
 
-MIDDLEWARE_CLASSES = [
+MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django_otp.middleware.OTPMiddleware',
     'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
@@ -93,6 +95,7 @@ TEMPLATES = [
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
                 'common.context_processors.site_name',
+                'common.context_processors.django_settings',
             ],
         },
     },
@@ -150,8 +153,9 @@ SITE_ID = 1
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 
-LOGIN_URL = reverse_lazy('two_factor:login')
-LOGIN_ERROR_URL = reverse_lazy('two_factor:login')
+LOGIN_URL = reverse_lazy('account_login')
+LOGOUT_URL = reverse_lazy('account_logout')
+LOGIN_ERROR_URL = reverse_lazy('account_login')
 LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')
 
 vars().update(env.email(backend='djcelery_email.backends.CeleryEmailBackend'))

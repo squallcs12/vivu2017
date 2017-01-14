@@ -1,7 +1,5 @@
 from django.contrib import messages
-from django.contrib.auth.decorators import login_required
 from django.core.urlresolvers import reverse_lazy
-from django.utils.decorators import method_decorator
 from django.utils.translation import gettext as _
 from django.views.generic.edit import FormView
 

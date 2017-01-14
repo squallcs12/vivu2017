@@ -2,26 +2,32 @@ import json
 import os
 import threading
 import time
+
 import django
 import django_nose
 from bs4 import BeautifulSoup
 from django.conf import settings
 from django.contrib.auth import get_user_model
+from django.contrib.auth.models import Permission
 from django.core import management
+from django.core.exceptions import ObjectDoesNotExist
 from django.core.urlresolvers import reverse
-from django.test.testcases import LiveServerTestCase, SimpleTestCase as DjangoSimpleTestCase
+from django.test.testcases import LiveServerTestCase
+from django.test.testcases import SimpleTestCase as DjangoSimpleTestCase
+from django.test.testcases import TestCase as DjangoTestCase
 from django_nose.plugin import ResultPlugin, DjangoSetUpPlugin, TestReorderer
 from django_nose.runner import _get_plugins_from_settings
 from faker import Faker
 from nose.core import TestProgram, TextTestRunner
 from nose.result import TextTestResult
+from rest_framework.authtoken.models import Token
+from rest_framework.test import APITestCase as RestAPITestCase
 from selenium import webdriver
 from selenium.common.exceptions import NoSuchElementException, WebDriverException
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.select import Select
-import sure  # need for sure style assertion
 
-from common.tests.factories.user_factory import UserFactory
+from accounts.factories.user_factory import UserFactory
 
 User = get_user_model()
 
@@ -70,6 +76,13 @@ def button(self, text):
 WebElement.button = button
 
 
+def fill_in(self, text):
+    self.clear()
+    self.send_keys(text)
+
+
+WebElement.fill_in = fill_in
+
 """prepare for with statement style
 so we can write like this
 with WebElement.button(text) as button:
@@ -112,6 +125,7 @@ class TimeoutException(AssertionError):
     """
     pass
 
+
 """Init global object for each run"""
 world = threading.local()
 world.browser = None
@@ -125,14 +139,16 @@ class UserTestBaseMixin(object):
     def login(self, user):
         raise NotImplemented()
 
-    def init_user(self):
+    def init_user(self, verified=True, **kwargs):
         """
         Create user object
         @return: common.models.User
         """
-        user = UserFactory()
+        user = UserFactory(verified=verified, **kwargs)
+
         if self.user is None:
             self.user = user
+
         return user
 
     def login_user(self, user=None):
@@ -148,11 +164,29 @@ class UserTestBaseMixin(object):
             user = self.user
         self.login(user)
 
+    def add_user_permissions(self, permissions, user=None):
+        if user is None:
+            user = self.user
+
+        permissions = Permission.objects.filter(codename__in=permissions)
+        for permission in permissions:
+            user.user_permissions.add(permission)
+        user.save()
+
+    @staticmethod
+    def env(name, default=None):
+        return settings.ENV(name, default=default)
+
+    @staticmethod
+    def in_environment(**kwargs):
+        return InEnvironmentContext(**kwargs)
+
 
 class TestDescriptionOverride:
     """
     Class override test case description for django nose
     """
+
     def __str__(self):
         """
         Return in format <module>:<class>.<method> so we can run individual test easier
@@ -169,6 +203,7 @@ class ChangeBrowserContext:
     """
     Switch between multiple browser context, will be used in with statement
     """
+
     def __init__(self, browser):
         self.browser = world.browser
         self.new_browser = browser
@@ -195,7 +230,7 @@ class InEnvironmentContext:
 class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBaseMixin):
     source = 0  # class counter
     source_dir = os.environ.get('CIRCLE_ARTIFACTS')  # get circle ci artifacts folder
-    terminate_test_server_after_test = False
+    terminate_test_server_after_test = True
     """Skip tear down class method, this will keep the server thread open until the test end
     But it also will reduce about 5 seconds when switching test class"""
 
@@ -236,11 +271,30 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         """
         return webdriver.PhantomJS()
 
+    def init_chrome(self):
+        options = webdriver.ChromeOptions()
+
+        options.add_argument('enable-usermedia-screen-capturing')
+        options.add_argument('auto-select-desktop-capture-source=Entire screen')
+        options.add_argument('use-fake-device-for-media-stream')
+        options.add_argument('use-fake-ui-for-media-stream')
+        options.add_argument('disable-web-security')
+
+        browser = webdriver.Chrome(chrome_options=options)
+
+        return browser
+
     def init_browser(self):
-        if os.environ.get('BROWSER') == 'phantomjs':
+        browser_type = os.environ.get('BROWSER')
+        if browser_type == 'phantomjs':
             browser = self.init_phantomjs()
+        elif browser_type == 'chrome':
+            browser = self.init_chrome()
         else:
             browser = self.init_firefox()
+
+        browser.implicitly_wait(10)
+        browser.set_window_size(1280, 800)
         world.browsers.append(browser)
         return browser
 
@@ -304,7 +358,7 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         body_text = self.find('body').text
         texts = [str(x) for x in texts]
         for text in texts:
-            body_text.should.contain(text)
+            self.assertIn(text, body_text)
 
     def should_see_one_among_texts(self, texts):
         """
@@ -316,7 +370,7 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         """
         body_text = self.find("body").text
         found = any(str(x) in body_text for x in texts)
-        found.should.be.true
+        self.assertTrue(found)
 
     def should_not_see_text(self, text):
         """
@@ -342,7 +396,6 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         self.find("#id_auth-username").send_keys(user.username)
         self.find("#id_auth-password").send_keys(user.raw_password)
         self.button("Next").click()
-        self.until(lambda: self.browser.page_source.should.contain(user.username))  # login successfully
 
     def logout(self):
         """
@@ -496,9 +549,7 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
         @type value: str
         @return: None
         """
-        selector_input = self.find(selector)
-        selector_input.clear()
-        selector_input.send_keys(value)
+        self.find(selector).fill_in(value)
 
     def sleep(self, seconds):
         """
@@ -531,17 +582,14 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
                     return value
             except Exception as ex:
                 if error:
-                    try:
-                        raise ex from error
-                    except Exception as ex2:
-                        error = ex2
+                    raise
                 else:
                     error = ex
             time.sleep(interval)
             if time.time() > end_time:
                 break
         self.take_screen_shot()
-        raise TimeoutException(message) from error
+        raise TimeoutException(message)
 
     def is_displayed_in_viewport(self, element):
         """
@@ -590,16 +638,8 @@ class BaseLiveTestCase(TestDescriptionOverride, LiveServerTestCase, UserTestBase
     def settings(self):
         return settings
 
-    @staticmethod
-    def env(name, default=None):
-        return settings.ENV(name, default=default)
 
-    @staticmethod
-    def in_environment(**kwargs):
-        return InEnvironmentContext(**kwargs)
-
-
-class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBaseMixin):
+class UnitTestCase(TestDescriptionOverride, UserTestBaseMixin):
     response = None
     _soup = None
 
@@ -610,8 +650,12 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @return: BeautifulSoup
         """
         if self._soup is None:
-            self._soup = BeautifulSoup(self.response.content)
+            self._soup = BeautifulSoup(self.response.content, 'html.parser')
         return self._soup
+
+    def set_response(self, response):
+        self.response = response
+        self._soup = BeautifulSoup(self.response.content, 'html.parser')
 
     def login(self, user):
         """
@@ -633,8 +677,8 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @type kwargs: dict
         @return: None
         """
-        self.response = self.client.get(path, *args, **kwargs)
-        self._soup = None
+        response = self.client.get(path, *args, **kwargs)
+        self.set_response(response)
 
     def find_all(self, selector):
         """
@@ -644,6 +688,12 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @return: bs4.element.Tag
         """
         return self.soup.select(selector)
+
+    def find(self, selector):
+        nodes = self.find_all(selector)
+        if not nodes:
+            return None
+        return nodes[0]
 
     def link(self, text):
         """
@@ -662,7 +712,9 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @return: None
         @raise AssertionError
         """
-        self.soup.text.should.contain(text)
+        if not isinstance(text, str):
+            text = str(text)
+        self.assertIn(text, self.soup.text)
 
     def should_not_see_text(self, text):
         """
@@ -672,7 +724,9 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @return: None
         @raise AssertionError
         """
-        self.soup.text.shouldnt.contain(text)
+        if not isinstance(text, str):
+            text = str(text)
+            self.assertNotIn(text, self.soup.text)
 
     def json(self, response):
         """
@@ -692,7 +746,15 @@ class SimpleTestCase(TestDescriptionOverride, DjangoSimpleTestCase, UserTestBase
         @raise AssertionError
         """
         for text in texts:
-            self.soup.text.should.contain(text)
+            self.assertIn(text, self.soup.text)
+
+
+class SimpleTestCase(UnitTestCase, DjangoSimpleTestCase):
+    pass
+
+
+class TestCase(UnitTestCase, DjangoTestCase):
+    pass
 
 
 class DjangoNoseTextTestResult(TextTestResult):
@@ -700,14 +762,16 @@ class DjangoNoseTextTestResult(TextTestResult):
         """
         Custom addError to take screenshot when error occurs
         """
-        BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
+        if hasattr(test, 'test'):
+            BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
         super(DjangoNoseTextTestResult, self).addError(test, err)
 
     def addFailure(self, test, err):
         """
         Custom addFailure to take screenshot when failure occurs
         """
-        BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
+        if hasattr(test, 'test'):
+            BaseLiveTestCase.take_screen_shot(test.test._testMethodName)
         super(DjangoNoseTextTestResult, self).addFailure(test, err)
 
     def addSuccess(self, test):
@@ -741,6 +805,7 @@ class NoseTestProgram(TestProgram):
     """
     Custom class to modify testRunner property
     """
+
     def runTests(self):
         if isinstance(self.testRunner, type):
             self.testRunner = self.testRunner(stream=self.config.stream,
@@ -773,3 +838,13 @@ class DjangoNoseTestSuiteRunner(django_nose.NoseTestSuiteRunner):
 
         self.test_program(argv=nose_argv, exit=False, addplugins=plugins_to_add, testRunner=DjangoNoseTextTestRunner)
         return result_plugin.result
+
+
+class APITestCase(UnitTestCase, RestAPITestCase):
+    def login(self, user):
+        self.user = user
+        try:
+            token = user.auth_token
+        except ObjectDoesNotExist:
+            token = Token.objects.create(user=user)
+        self.client.credentials(HTTP_AUTHORIZATION='Token ' + token.key)

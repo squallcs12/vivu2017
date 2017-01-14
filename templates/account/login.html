@@ -1,8 +1,9 @@
-{% extends "accounts/base.html" %}
+{% extends "account/base.html" %}
 
 {% load i18n %}
+{% load account socialaccount %}
 
-{% block head_title %}{% trans "Signup" %}{% endblock %}
+{% block head_title %}{% trans "Sign In" %}{% endblock %}
 
 {% block head-link %}
 {{ block.super }}
@@ -13,7 +14,7 @@
 {% block content %}
 <div class="row">
   <div class="col-md-12">
-    <h1>{% trans "Sign Up" %}</h1>
+    <h1>{% trans "Sign In" %}</h1>
   </div>
 </div>
 
@@ -21,18 +22,19 @@
   <div class="col-md-6">
     <div class="well">
       <p>
-        {% url 'account_login' as login_url %}
-        {% blocktrans %}Already have an account? Then please <a href="{{ login_url }}">sign in</a>.{% endblocktrans %}
+        {% url 'account_signup' as signup_url %}
+        {% blocktrans %}If you have not created an account yet, then please
+        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
       </p>
-      <form class="signup form-horizontal" id="signup_form" method="post" action="{% url 'account_signup' %}">
+      <form class="signin form-horizontal" id="signin_form" method="post" action="{% url 'account_login' %}">
         {% csrf_token %}
         {% include 'general/form_render.html' %}
         {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}" />
+        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
         {% endif %}
         <div class="form-group">
           <div class="col-md-9 col-md-offset-3">
-            <button type="submit" class="btn btn-primary">{% trans "Sign Up" %} &raquo;</button>
+            <button type="submit" class="btn btn-primary">{% trans "Login" %} &raquo;</button>
           </div>
         </div>
       </form>

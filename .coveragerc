@@ -1,2 +1,10 @@
+[run]
+source =
+  accounts
+  common
 [report]
-omit = */migrations/*,*/.virtualenvs/*,common/tests/core.py,common/templatetags/*
+omit =
+  */migrations/*
+  common/tests/core.py
+  common/templatetags/*
+  */factories/*

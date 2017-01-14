@@ -1,31 +1,29 @@
 from django.core.urlresolvers import reverse
 
-from accounts.tests.intergrations.base import AccountTestBase, FillPasswordFormMixin
+from common.tests.core import TestCase
 
 
-class AccountChangePasswordTestCase(FillPasswordFormMixin, AccountTestBase):
+class AccountChangePasswordTestCase(TestCase):
     def setUp(self):
         self.login_user()
 
     def submit_change_password_form(self, old_pw, new_pw, confirm_pw):
-        self.fill_in('#id_oldpassword', old_pw)
-        self.fill_password(new_pw, confirm_pw)
-        self.button('Change Password').click()
+        response = self.client.post(reverse('account_change_password'), {
+            'oldpassword': old_pw,
+            'password1': new_pw,
+            'password2': confirm_pw,
+        }, follow=True)
+        self.set_response(response)
 
-    def test_show_changepassword_view(self):
-        self.visit_profile()
-        self.click_account_menu_item('Change password')
-        self.check_navigation_and_see_text(reverse('account_change_password'), 'Change Password')
+    def test_show_change_password_link(self):
+        self.visit(reverse('accounts:profile'))
+        self.assertEqual(reverse('account_change_password'), self.link('Change password').attrs['href'])
 
     def test_wrong_old_password(self):
-        self.visit(reverse('account_change_password'))
-
         self.submit_change_password_form('invalid', '123', '123')
         self.should_see_text('Please type your current password.')
 
     def assert_password_validation(self, password, confirm_password, message):
-        self.visit(reverse('account_change_password'))
-
         self.submit_change_password_form(self.user.raw_password, password, confirm_password)
         self.should_see_text(message)
 

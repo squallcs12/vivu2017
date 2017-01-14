@@ -4,11 +4,12 @@ from django.core.urlresolvers import reverse
 from django.http.response import HttpResponse
 from django.test.utils import override_settings
 
-from accounts.tests.intergrations.base import AccountTestBase, FillPasswordFormMixin
-from common.tests.factories.user_factory import UserFactory
+
+from common.tests.core import TestCase
+from accounts.factories.user_factory import UserFactory
 
 
-class AccountSetPasswordTestCase(FillPasswordFormMixin, AccountTestBase):
+class AccountSetPasswordTestCase(TestCase):
     @classmethod
     def fake_login_view(cls, request):
         user = cls.user
@@ -27,24 +28,28 @@ class AccountSetPasswordTestCase(FillPasswordFormMixin, AccountTestBase):
         self.user.save()
 
         self.fake_login(self.user)
-        return self.user
 
     def fill_new_password(self, password, confirm_password):
-        self.visit(reverse('account_set_password'))
-        self.fill_password(password, confirm_password)
-
-        self.button('Set Password').click()
+        response = self.client.post(reverse('account_set_password'), {
+            'password1': password,
+            'password2': confirm_password,
+        })
+        self.set_response(response)
 
     def test_valid_password(self):
         self.fill_new_password('abcABC123!', 'abcABC123!')
-        self.should_see_text('Password successfully set.')
+        self.assertEqual(self.response.status_code, 302)
 
     def test_weak_password(self):
         self.fill_new_password('abc', 'abc')
+
+        self.assertEqual(self.response.status_code, 200)
         self.should_see_text('Password must be a minimum of 6 characters.')
 
     def test_not_match_password(self):
         self.fill_new_password('abc123', '123456')
+
+        self.assertEqual(self.response.status_code, 200)
         self.should_see_text('You must type the same password each time.')
 
 
