@@ -8,6 +8,7 @@ machine:
 
 test:
   override:
+    - flake8
     - coverage run manage.py test $TEST_COMMAND_EXTENDS
   post:
     - python scripts/coverage_script.py
