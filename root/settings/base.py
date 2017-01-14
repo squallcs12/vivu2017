@@ -55,9 +55,6 @@ INSTALLED_APPS = [
     'django.contrib.sites',
 
     'django_extensions',
-    'django_otp',
-    'django_otp.plugins.otp_static',
-    'django_otp.plugins.otp_totp',
     'djcelery_email',
     'allauth',
     'allauth.account',
