@@ -24,7 +24,7 @@ def form_requirements(form):
     return context
 
 
-@register.inclusion_tag('_notification_message.html')
+@register.inclusion_tag('general/_notification_message.html')
 def render_message(message):
     """
     Render message to html
