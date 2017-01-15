@@ -1,3 +1,4 @@
+# dev
 beautifulsoup4==4.4.1
 celery==3.1.23
 Django==1.10.5
@@ -7,8 +8,10 @@ django-celery-email==1.1.4
 django-environ==0.4.0
 django-extensions==1.6.7
 django-rest-auth==0.9.0
+psycopg2==2.6.1
 
 
+# test
 coverage==4.1
 django-nose==1.4.4
 factory-boy==2.7.0
@@ -17,6 +20,5 @@ gunicorn==19.6.0
 ipdb==0.10.0
 nose-timer==0.6.0
 flake8==3.2.1
-psycopg2==2.6.1
 selenium==2.53.2
 whitenoise==3.1
