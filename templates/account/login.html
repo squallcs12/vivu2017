@@ -16,29 +16,24 @@
   <div class="col-md-12">
     <h1>{% trans "Sign In" %}</h1>
   </div>
-</div>
-
-<div class="row">
-  <div class="col-md-6">
-    <div class="well">
-      <p>
-        {% url 'account_signup' as signup_url %}
-        {% blocktrans %}If you have not created an account yet, then please
-        <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
-      </p>
-      <form class="signin form-horizontal" id="signin_form" method="post" action="{% url 'account_login' %}">
-        {% csrf_token %}
-        {% include 'general/form_render.html' %}
-        {% if redirect_field_value %}
-        <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
-        {% endif %}
-        <div class="form-group">
-          <div class="col-md-9 col-md-offset-3">
-            <button type="submit" class="btn btn-primary">{% trans "Login" %} &raquo;</button>
-          </div>
+  <div class="col-md-5">
+    <p>
+      {% url 'account_signup' as signup_url %}
+      {% blocktrans %}If you have not created an account yet, then please
+      <a href="{{ signup_url }}">sign up</a> first.{% endblocktrans %}
+    </p>
+    <form class="signin form-horizontal" id="signin_form" method="post" action="{% url 'account_login' %}">
+      {% csrf_token %}
+      {% include 'general/form_render.html' %}
+      {% if redirect_field_value %}
+      <input type="hidden" name="{{ redirect_field_name }}" value="{{ redirect_field_value }}"/>
+      {% endif %}
+      <div class="form-group">
+        <div class="col-md-9 col-md-offset-3">
+          <button type="submit" class="btn btn-primary">{% trans "Login" %} &raquo;</button>
         </div>
-      </form>
-    </div>
+      </div>
+    </form>
   </div>
 
   {% include '_account_social_login.html' %}

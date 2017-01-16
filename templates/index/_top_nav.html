@@ -1,55 +1,69 @@
 {% load i18n %}
-<div class="navbar navbar-default navbar-fixed-top">
-  <div class="container">
-    <div class="navbar-header">
-      <a href="/" class="navbar-brand">{{ SITE_NAME }}</a>
-      <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-        <span class="icon-bar"></span>
-      </button>
-    </div>
-    <div class="navbar-collapse collapse" id="navbar-main">
-      <ul class="nav navbar-nav">
-        <li>
-          <a href="#">Link 1</a>
-        </li>
-        <li>
-          <a href="#">Link 2</a>
-        </li>
-      </ul>
+<div class="container">
+  <div class="header">
+    <div class="header-nav">
 
-      <ul class="nav navbar-nav navbar-right">
-        {% if user.is_authenticated %}
-        <li class="dropdown">
-
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-            {{ user.username }}
-            <b class="caret"></b>
-          </a>
-          <ul class="dropdown-menu">
-            <li>
-              <a class="profile" href="{% url 'accounts:profile' %}">
-                {% trans "Profile" %}
-              </a>
+      <div class="navbar navbar-default">
+        <div class="navbar-header">
+          <a href="/" class="navbar-brand">{{ SITE_NAME }}</a>
+          <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+        </div>
+         <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="hvr-bounce-to-bottom active">
+              <a href="/">Home</a>
             </li>
-            <li><a class="logout" href="{% url 'account_logout' %}">{% trans 'Log out' %}</a></li>
+            <li class="hvr-bounce-to-bottom">
+              <a href="#">Link 1</a>
+            </li>
+            <li class="hvr-bounce-to-bottom">
+              <a href="#">Link 2</a>
+            </li>
           </ul>
-        </li>
-        {% else %}
-        <li>
-          <a href="{% url 'account_signup' %}">
-            {% trans "Sign up" %}
-          </a>
-        </li>
-        <li>
-          <a href="{% url 'account_login' %}">
-            {% trans "Log in" %}
-          </a>
-        </li>
-        {% endif %}
-      </ul>
+          {% if user.is_authenticated %}
+          <ul class="nav navbar-nav navbar-right">
 
+              <li class="dropdown">
+
+                <a href="#" class="dropdown-toggle user" data-toggle="dropdown">
+                  {{ user.username }}
+                  <b class="caret"></b>
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a class="profile" href="{% url 'accounts:profile' %}">
+                      {% trans "Profile" %}
+                    </a>
+                  </li>
+                  <li><a class="logout" href="{% url 'account_logout' %}">{% trans 'Log out' %}</a></li>
+                </ul>
+              </li>
+          </ul>
+          {% else %}
+            <div class="sign-in">
+            <ul>
+              <li>
+                <a href="{% url 'account_signup' %}">
+                  {% trans "Sign up" %}
+                </a>
+                /
+              </li>
+              <li>
+                <a href="{% url 'account_login' %}">
+                  {% trans "Log in" %}
+                </a>
+              </li>
+            </ul>
+            </div>
+          {% endif %}
+
+        </div>
+      </div>
     </div>
   </div>
 </div>

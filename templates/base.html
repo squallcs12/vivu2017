@@ -26,7 +26,7 @@
   <link rel="home" href="/"/>
   {% block head-link %}
     <link rel="stylesheet" type="text/css"
-          href="https://cdnjs.cloudflare.com/ajax/libs/bootswatch/3.3.6/cerulean/bootstrap.min.css"/>
+          href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}"/>
   {% endblock %}
   {% include 'index/_js_defined_params.html' %}
@@ -39,23 +39,32 @@
   <script src="{% static 'common/js/head_define.js' %}"></script>
 </head>
 <body id="{% block page_id %}{% endblock %}">
-{% include 'index/_top_nav.html' %}
-<div class="container">
-  {% include 'index/_top_banner.html' %}
-  {% block slider %}{% endblock %}
-  <div id="content" class="hfeed">
-    {% include 'index/_notification.html' %}
+<div class="banner-body">
+  {% include 'index/_top_nav.html' %}
+  <div class="container">
+    <div class="header-bottom">
+      {% include 'index/_top_banner.html' %}
+      {% block slider %}{% endblock %}
+      <div id="content" class="hfeed">
+        {% include 'index/_notification.html' %}
 
-    {% block content %}
+        {% block content %}
 
-    {% endblock %}
+        {% endblock %}
+      </div>
+    </div>
   </div>
+</div>
+<div class="footer">
+
+</div>
+<div class="footer-bottom">
   <footer>
     <div class="row">
       <div class="col-lg-12">
         {% include 'index/_footer_nav.html' %}
         <p>
-          {% blocktrans %}Powered by <a href="/">{{ SITE_NAME }}</a>{% endblocktrans %}
+          {% blocktrans %}Powered by <a href="/">{{ SITE_NAME }}</a> 2017{% endblocktrans %}
         </p>
       </div>
     </div>

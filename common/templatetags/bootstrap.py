@@ -1,5 +1,7 @@
 from django import template
 from django.forms.fields import DateField, DateTimeField
+from django.forms.widgets import CheckboxInput
+
 
 register = template.Library()
 
@@ -14,6 +16,10 @@ def form_requirements(form):
     """
     context = {}
     for bound_field in form:
+        if isinstance(bound_field.field.widget, CheckboxInput):
+            bound_field.field.checkbox = True
+            continue
+
         bound_field.field.widget.attrs['class'] = 'form-control'
         if isinstance(bound_field.field, (DateField, DateTimeField)):
             context['datetimepicker'] = True
