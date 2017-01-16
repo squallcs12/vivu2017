@@ -16,52 +16,9 @@
         <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
             <li class="hvr-bounce-to-bottom active">
-              <a href="/">Home</a>
-            </li>
-            <li class="hvr-bounce-to-bottom">
-              <a href="#">Link 1</a>
-            </li>
-            <li class="hvr-bounce-to-bottom">
-              <a href="#">Link 2</a>
+              <a href="/">{% trans 'Home' %}</a>
             </li>
           </ul>
-          {% if user.is_authenticated %}
-          <ul class="nav navbar-nav navbar-right">
-
-              <li class="dropdown">
-
-                <a href="#" class="dropdown-toggle user" data-toggle="dropdown">
-                  {{ user.username }}
-                  <b class="caret"></b>
-                </a>
-                <ul class="dropdown-menu">
-                  <li>
-                    <a class="profile" href="{% url 'accounts:profile' %}">
-                      {% trans "Profile" %}
-                    </a>
-                  </li>
-                  <li><a class="logout" href="{% url 'account_logout' %}">{% trans 'Log out' %}</a></li>
-                </ul>
-              </li>
-          </ul>
-          {% else %}
-            <div class="sign-in">
-            <ul>
-              <li>
-                <a href="{% url 'account_signup' %}">
-                  {% trans "Sign up" %}
-                </a>
-                /
-              </li>
-              <li>
-                <a href="{% url 'account_login' %}">
-                  {% trans "Log in" %}
-                </a>
-              </li>
-            </ul>
-            </div>
-          {% endif %}
-
         </div>
       </div>
     </div>
