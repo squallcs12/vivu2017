@@ -1,8 +1,13 @@
 from django.conf import settings
+from django.contrib.sites.models import Site
 
 
 def site_name(request):
-    return {'SITE_NAME': settings.SITE_NAME}
+    if 'django.contrib.sites' in settings.INSTALLED_APPS:
+        name = Site.objects.get(pk=settings.SITE_ID).name
+    else:
+        name = settings.SITE_NAME
+    return {'SITE_NAME': name}
 
 
 def django_settings(request):
