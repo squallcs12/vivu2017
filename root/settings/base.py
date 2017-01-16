@@ -65,6 +65,7 @@ INSTALLED_APPS = [
 
     'accounts',
     'common',
+    'progress',
 ]
 
 MIDDLEWARE = [
