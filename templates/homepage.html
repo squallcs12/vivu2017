@@ -1,5 +1,6 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load progress %}
 
 {% block content %}
   <div class="header-bottom-top">
@@ -9,5 +10,9 @@
       <li><a href="#" class="facebook"> </a></li>
       <li><a href="#" class="twitter"> </a></li>
     </ul>
+  </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    {% progress 'overall_progress' %}
   </div>
 {% endblock %}
