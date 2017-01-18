@@ -1,7 +1,5 @@
 from django.db import models
-from django.db.models.aggregates import Sum
 from django.utils.encoding import force_text
-
 
 MILESTONE_STATE_UNSTARTED = 0
 MILESTONE_STATE_STARTED = 1
@@ -47,4 +45,3 @@ class Milestone(models.Model):
 
     def __str__(self):
         return force_text(self.name)
-

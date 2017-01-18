@@ -12,6 +12,7 @@ def get_default_percentage(progress):
     custom_percentages_sum = custom_percentages['percentage__sum'] or 0
     return (100 - custom_percentages_sum) / milestones_count
 
+
 @register.inclusion_tag('progress/progress.html')
 def progress(code_name):
     progress = Progress.objects.filter(code_name=code_name).first()
