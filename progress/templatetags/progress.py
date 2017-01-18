@@ -14,8 +14,9 @@ def get_default_percentage(progress):
 
 
 @register.inclusion_tag('progress/progress.html')
-def progress(code_name):
-    progress = Progress.objects.filter(code_name=code_name).first()
+def render_progress(progress):
+    if isinstance(progress, str):
+        progress = Progress.objects.filter(code_name=progress).first()
     if not progress:
         return
 

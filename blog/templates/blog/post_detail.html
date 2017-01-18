@@ -1,0 +1,10 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ post.title }}{% endblock %}
+
+{% block content %}
+  {% include 'blog/post.html' %}
+  <div id="comments">
+    <div class="fb-comments" data-href="{{ absolute_url }}" data-numposts="50" data-width="100%"></div>
+  </div>
+{% endblock %}

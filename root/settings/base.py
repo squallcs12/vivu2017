@@ -22,7 +22,9 @@ env = environ.Env(
     ALLOWED_HOSTS=(str, ''),
     DATABASE_URL=(str, 'sqlite:///sqlite.db'),
     EMAIL_URL=(str, ''),
-    DEFAULT_FROM_EMAIL=(str, 'admin@domain.com')
+    DEFAULT_FROM_EMAIL=(str, 'admin@domain.com'),
+    HEADER_POST_ID=(int, 1),
+    HEADER_PROGRESS_ID=(int, 1)
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -56,16 +58,13 @@ INSTALLED_APPS = [
 
     'django_extensions',
     'djcelery_email',
-    'allauth',
-    'allauth.account',
-    'allauth.socialaccount',
-    'allauth.socialaccount.providers.facebook',
-    'allauth.socialaccount.providers.google',
-    'allauth.socialaccount.providers.twitter',
+    'ckeditor',
+    'ckeditor_uploader',
 
     'accounts',
     'common',
     'progress',
+    'blog',
 ]
 
 MIDDLEWARE = [
@@ -161,3 +160,12 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
+
+
+# CKEDITOR https://github.com/django-ckeditor/django-ckeditor
+CKEDITOR_UPLOAD_PATH = "uploads/"
+
+
+# WEBSITE CONFIG
+HEADER_POST_ID = env('HEADER_POST_ID')
+HEADER_PROGRESS_ID = env('HEADER_PROGRESS_ID')
