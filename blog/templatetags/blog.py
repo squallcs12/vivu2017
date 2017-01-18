@@ -1,10 +1,16 @@
 from django import template
 
+from blog.models import Post
+
 register = template.Library()
 
 
 @register.inclusion_tag('blog/post.html', takes_context=True)
 def render_post(context, post):
+    if isinstance(post, str):
+        post = Post.objects.filter(slug=post).first()
+    if not post:
+        return
     request = context['request']
     return {
         'post': post,
