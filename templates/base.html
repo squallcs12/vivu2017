@@ -46,6 +46,7 @@
       {% block slider %}{% endblock %}
       <div id="content" class="hfeed">
         {% include 'index/_notification.html' %}
+        {% include 'index/_social.html' %}
 
         {% block content %}
 
@@ -69,7 +70,15 @@
     </div>
   </footer>
 </div>
+<div id="fb-root"></div>
 {% block footer-js %}
+  <script>(function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId=1660761390883975";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}
 <script src="{% static 'common/js/foot_define.js' %}"></script>

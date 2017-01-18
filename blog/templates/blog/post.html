@@ -1,0 +1,12 @@
+{% load i18n %}
+<div class="post">
+  <h3>{{ post.title }}</h3>
+  <div>
+    {{ post.content|safe }}
+  </div>
+  <div>
+    <div class="fb-like" data-href="{{ absolute_url }}" data-layout="button_count"
+         data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+    <a href="{{ absolute_url }}#comments">{% trans "Comments" %}</a>
+  </div>
+</div>

@@ -1,0 +1,16 @@
+{% extends 'base.html' %}
+{% load i18n %}
+{% load progress blog %}
+
+{% block content %}
+  <div class="row planing-progress">
+    <div class="col-lg-12">
+      {% render_progress planing_progress %}
+    </div>
+  </div>
+  <div class="row header-post">
+    <div class="col-lg-12">
+      {% render_post header_post %}
+    </div>
+  </div>
+{% endblock %}
