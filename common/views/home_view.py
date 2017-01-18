@@ -15,4 +15,3 @@ class HomeView(TemplateView):
             'header_post': Post.objects.filter(id=settings.HEADER_POST_ID).first(),
         })
         return context
-
