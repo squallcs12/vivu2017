@@ -5,7 +5,6 @@ License: Creative Commons Attribution 3.0 Unported
 License URL: http://creativecommons.org/licenses/by/3.0/
 --*/
 html, body{
-    font-size: 100%;
 	background:	#fff;
 	font-family:OpenSans-Regular;
 }
@@ -520,12 +519,12 @@ position:relative;
 .nbs-flexisel-nav-left {
 left: -4%;
 top: 15% !important;
-background: url(../images/3.png) no-repeat 0px 0px;
+background: url(../images/3.jpg) no-repeat 0px 0px;
 }
 .nbs-flexisel-nav-right {
 right: -4%;
 top: 15% !important;
-background: url(../images/3.png) no-repeat -66px 0px;
+background: url(../images/3.jpg) no-repeat -66px 0px;
 }
 /*--//flexisel--*/
 /*-- banner-bottom --*/
@@ -1406,9 +1405,6 @@ p.lom{
   margin: 20px 0 0 0;
   color: #999;
   line-height: 1.8em;
-}
-.row {
-  margin: 50px 0 0 0;
 }
 .caption h4 {
   margin: 0.5em 0;
@@ -2715,4 +2711,12 @@ h1, h2, h3, h4, h5, h6 {
 
 .row .row {
 	margin: 0;
+}
+
+.progress-hide-on-zero .progress-bar {
+	overflow: hidden;
+}
+
+.progress-bar a {
+	color: #fff;
 }

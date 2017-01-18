@@ -1,6 +1,18 @@
 {% extends 'base.html' %}
 {% load i18n %}
+{% load progress %}
 
 {% block content %}
-
+  <div class="header-bottom-top">
+    <ul>
+      <li><a href="https://www.facebook.com/sharer/sharer.php" class="g"> </a></li>
+      <li><a href="#" class="p"> </a></li>
+      <li><a href="#" class="facebook"> </a></li>
+      <li><a href="#" class="twitter"> </a></li>
+    </ul>
+  </div>
+  <div class="clearfix"></div>
+  <div class="row">
+    {% progress 'overall_progress' %}
+  </div>
 {% endblock %}
