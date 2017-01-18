@@ -1,8 +1,6 @@
 import factory
 from django.contrib.auth import get_user_model
 
-from accounts.factories.email_address_factory import EmailAddressFactory
-
 
 class UserFactory(factory.DjangoModelFactory):
     username = factory.Sequence(lambda n: "username{}".format(n))
@@ -22,7 +20,7 @@ class UserFactory(factory.DjangoModelFactory):
         exclude = ('raw_password',)
 
     @classmethod
-    def _prepare(cls, create, password=None, verified=True, **kwargs):
+    def _prepare(cls, create, password=None, **kwargs):
         user = super(UserFactory, cls)._prepare(create, **kwargs)
 
         user.raw_password = password
@@ -30,6 +28,5 @@ class UserFactory(factory.DjangoModelFactory):
 
         if create:
             user.save()
-            EmailAddressFactory(user=user, email=user.email, verified=verified)
 
         return user
