@@ -11,9 +11,8 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 """
 
 import os
-import environ
 
-# Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+import environ
 from django.core.urlresolvers import reverse_lazy
 
 env = environ.Env(
@@ -24,7 +23,8 @@ env = environ.Env(
     EMAIL_URL=(str, ''),
     DEFAULT_FROM_EMAIL=(str, 'admin@domain.com'),
     HEADER_POST_ID=(int, 1),
-    HEADER_PROGRESS_ID=(int, 1)
+    HEADER_PROGRESS_ID=(int, 1),
+    POST_PER_PAGE=(int, 5)
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -161,11 +161,10 @@ DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
 ACCOUNT_EMAIL_VERIFICATION = 'mandatory'
 ACCOUNT_EMAIL_REQUIRED = True
 
-
 # CKEDITOR https://github.com/django-ckeditor/django-ckeditor
 CKEDITOR_UPLOAD_PATH = "uploads/"
-
 
 # WEBSITE CONFIG
 HEADER_POST_ID = env('HEADER_POST_ID')
 HEADER_PROGRESS_ID = env('HEADER_PROGRESS_ID')
+POST_PER_PAGE = env('POST_PER_PAGE')

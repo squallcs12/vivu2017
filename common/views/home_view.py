@@ -13,5 +13,6 @@ class HomeView(TemplateView):
         context.update({
             'planing_progress': Progress.objects.filter(id=settings.HEADER_PROGRESS_ID).first(),
             'header_post': Post.objects.filter(id=settings.HEADER_POST_ID).first(),
+            'posts': Post.objects.exclude(id=settings.HEADER_POST_ID).order_by('-id')[0:settings.POST_PER_PAGE],
         })
         return context
