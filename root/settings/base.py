@@ -24,7 +24,8 @@ env = environ.Env(
     DEFAULT_FROM_EMAIL=(str, 'admin@domain.com'),
     HEADER_POST_ID=(int, 1),
     HEADER_PROGRESS_ID=(int, 1),
-    POST_PER_PAGE=(int, 5)
+    POST_PER_PAGE=(int, 5),
+    FACEBOOK_APP_ID=(str, '')
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -171,3 +172,4 @@ CKEDITOR_UPLOAD_PATH = "uploads/"
 HEADER_POST_ID = env('HEADER_POST_ID')
 HEADER_PROGRESS_ID = env('HEADER_PROGRESS_ID')
 POST_PER_PAGE = env('POST_PER_PAGE')
+FACEBOOK_APP_ID = env('FACEBOOK_APP_ID')

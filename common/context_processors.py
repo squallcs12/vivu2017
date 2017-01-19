@@ -14,6 +14,7 @@ def django_settings(request):
     keys = [
         'LOGIN_URL',
         'LOGOUT_URL',
+        'FACEBOOK_APP_ID',
     ]
 
     return {x: getattr(settings, x) for x in keys}
