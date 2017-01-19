@@ -13,3 +13,4 @@ htmlcov/
 .env
 ghostdriver.log
 sqlite.db
+/media/
