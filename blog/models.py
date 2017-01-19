@@ -1,4 +1,4 @@
-from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 from django.db import models
 from django.urls.base import reverse
 from django.utils import timezone
@@ -8,7 +8,7 @@ from django.utils.encoding import force_text
 class Post(models.Model):
     title = models.CharField(max_length=255)
     slug = models.SlugField(unique=True)
-    content = RichTextField()
+    content = RichTextUploadingField()
     is_published = models.BooleanField(default=True)
     published_date = models.DateTimeField(default=timezone.now)
 

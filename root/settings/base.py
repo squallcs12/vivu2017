@@ -143,6 +143,9 @@ USE_TZ = True
 STATIC_ROOT = 'static'
 STATIC_URL = '/static/'
 
+MEDIA_ROOT = 'media'
+MEDIA_URL = '/media/'
+
 AUTH_USER_MODEL = 'accounts.User'
 
 SITE_NAME = os.getenv('SITE_NAME', 'Django')
