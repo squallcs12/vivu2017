@@ -13,8 +13,10 @@ Including another URLconf
     1. Import the include() function: from django.conf.urls import url, include
     2. Add a URL to urlpatterns:  url(r'^blog/', include('blog.urls'))
 """
+from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
+from django.views.static import serve
 
 from common.views.home_view import HomeView
 
@@ -23,5 +25,12 @@ urlpatterns = [
     url(r'^$', HomeView.as_view(), name='index'),
     url(r'^ckeditor/', include('ckeditor_uploader.urls')),
     url(r'^blog/', include('blog.urls', namespace='blog')),
-
+    url(r'^webpush/', include('webpush.urls')),
 ]
+
+if settings.DEBUG:
+    urlpatterns += [
+        url(r'(?P<path>serviceworker\.js)', serve, kwargs={
+            'document_root': 'blog/static/blog/js'
+        }),
+    ]

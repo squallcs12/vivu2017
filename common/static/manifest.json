@@ -1,0 +1,23 @@
+{
+  "short_name": "Vivu2017",
+  "name": "Bang Dao 2017 Trip",
+  "icons": [
+    {
+      "src": "launcher-icon-1x.png",
+      "type": "image/png",
+      "sizes": "48x48"
+    },
+    {
+      "src": "launcher-icon-2x.png",
+      "type": "image/png",
+      "sizes": "96x96"
+    },
+    {
+      "src": "launcher-icon-4x.png",
+      "type": "image/png",
+      "sizes": "192x192"
+    }
+  ],
+  "start_url": "/launcher=true",
+  "gcm_sender_id": "397430815537"
+}

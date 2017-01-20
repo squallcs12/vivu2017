@@ -1,10 +1,26 @@
 {% extends 'base.html' %}
+{% load staticfiles webpush_notifications i18n %}
 
 {% block title %}{{ post.title }}{% endblock %}
 
 {% block content %}
   {% include 'blog/post.html' %}
+  <div>
+    <p>
+      <br />
+      <a id="webpush-subscribe-button" data-group="blog_post" data-url="/webpush/save_information" href="#">
+        {% trans 'Notify me when have new post' %}
+      </a>
+    </p>
+    <div id="webpush-message"></div>
+  </div>
   <div id="comments">
     <div class="fb-comments" data-href="{{ absolute_url }}" data-numposts="50" data-width="100%"></div>
   </div>
+{% endblock %}
+
+{% block footer-js %}
+  {{ block.super }}
+  <script id="webpush-js" src="{% static 'blog/js/webpush.js' %}"></script>
+  <script id="service-worker-js" src="/serviceworker.js"></script>
 {% endblock %}

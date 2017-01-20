@@ -25,7 +25,9 @@ env = environ.Env(
     HEADER_POST_ID=(int, 1),
     HEADER_PROGRESS_ID=(int, 1),
     POST_PER_PAGE=(int, 5),
-    FACEBOOK_APP_ID=(str, '')
+    FACEBOOK_APP_ID=(str, ''),
+    GCM_ID=(str, ''),
+    GCM_KEY=(str, '')
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -61,6 +63,7 @@ INSTALLED_APPS = [
     'djcelery_email',
     'ckeditor',
     'ckeditor_uploader',
+    'webpush',
 
     'accounts',
     'common',
@@ -175,12 +178,12 @@ CKEDITOR_CONFIGS = {
             ['Cut', 'Copy', 'Paste', 'PasteText', 'PasteFromWord', '-', 'Undo', 'Redo'],
             ['Find', 'Replace', '-', 'SelectAll', '-', 'Scayt'],
             ['Form', 'Checkbox', 'Radio', 'TextField', 'Textarea', 'Select', 'Button', 'ImageButton',
-                     'HiddenField'],
+             'HiddenField'],
             '/',
             ['Bold', 'Italic', 'Underline', 'Strike', 'Subscript', 'Superscript', '-', 'RemoveFormat'],
             ['NumberedList', 'BulletedList', '-', 'Outdent', 'Indent', '-', 'Blockquote', 'CreateDiv', '-',
-                     'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
-                     'Language'],
+             'JustifyLeft', 'JustifyCenter', 'JustifyRight', 'JustifyBlock', '-', 'BidiLtr', 'BidiRtl',
+             'Language'],
             ['Link', 'Unlink', 'Anchor'],
             ['Image', 'Flash', 'Table', 'HorizontalRule', 'Smiley', 'SpecialChar', 'PageBreak', 'Iframe'],
             '/',
@@ -189,6 +192,12 @@ CKEDITOR_CONFIGS = {
             ['Maximize', 'ShowBlocks'],
         ]
     }
+}
+
+# WEBPUSH CONFIG https://github.com/safwanrahman/django-webpush
+WEBPUSH_SETTINGS = {
+    'GCM_ID': env('GCM_ID'),
+    'GCM_KEY': env('GCM_KEY'),
 }
 
 # WEBSITE CONFIG

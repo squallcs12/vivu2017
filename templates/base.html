@@ -24,18 +24,15 @@
   <link rel="pingback" href="/xmlrpc/"/>
   <link rel="shortcut icon" href="{% static 'favicon.ico' %}"/>
   <link rel="home" href="/"/>
+
+  <link rel="manifest" href="{% static 'manifest.json' %}">
+
   {% block head-link %}
     <link rel="stylesheet" type="text/css"
           href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/css/bootstrap.min.css"/>
     <link rel="stylesheet" type="text/css" href="{% static 'common/css/style.css' %}"/>
   {% endblock %}
   {% include 'index/_js_defined_params.html' %}
-  {% block head-js %}
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
-    <script>jQuery.noConflict();</script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
-  {% endblock %}
-  <script src="{% static 'common/js/head_define.js' %}"></script>
 </head>
 <body id="{% block page_id %}{% endblock %}">
 <div class="banner-body">
@@ -72,12 +69,18 @@
 </div>
 <div id="fb-root"></div>
 {% block footer-js %}
-  <script>(function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId={{ FACEBOOK_APP_ID }}";
-    fjs.parentNode.insertBefore(js, fjs);
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.3/jquery.min.js"></script>
+  <script>jQuery.noConflict();</script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.1/jquery.cookie.min.js"></script>
+
+  <script src="{% static 'common/js/head_define.js' %}"></script>
+  <script>(function (d, s, id) {
+      var js, fjs = d.getElementsByTagName(s)[0];
+      if (d.getElementById(id)) return;
+      js = d.createElement(s);
+      js.id = id;
+      js.src = "//connect.facebook.net/en_US/sdk.js#xfbml=1&version=v2.8&appId={{ FACEBOOK_APP_ID }}";
+      fjs.parentNode.insertBefore(js, fjs);
   }(document, 'script', 'facebook-jssdk'));</script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 {% endblock %}
