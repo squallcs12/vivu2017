@@ -2,7 +2,7 @@
 import os
 import sys
 
-__VERSION__ = '1.0.0'
+__VERSION__ = '1.0.1'
 
 if __name__ == "__main__":
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "root.settings.dev.local")
