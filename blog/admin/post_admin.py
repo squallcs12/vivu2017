@@ -17,7 +17,7 @@ class PostAdmin(admin.ModelAdmin):
                 'options': {
                     'body': obj.title,
                     'data': {
-                        'url': obj.get_absolute_url(),
+                        'url': '{}?ref=notification'.format(obj.get_absolute_url()),
                     }
                 },
             }

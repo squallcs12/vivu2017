@@ -13,5 +13,6 @@ class PostView(DetailView):
             'webpush': {
                 'group': 'blog_post',
             },
+            'from_notification': self.request.GET.get('ref', '') == 'notification',
         })
         return context

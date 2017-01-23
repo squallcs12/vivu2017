@@ -3,17 +3,32 @@
 
 {% block title %}{{ post.title }}{% endblock %}
 
+{% block head-link %}
+  {{ block.super }}
+  <link rel="stylesheet" href="{% static 'blog/css/style.css' %}" />
+{% endblock %}
+
 {% block content %}
-  {% include 'blog/post.html' %}
-  <div>
-    <p>
-      <br />
-      <a id="webpush-subscribe-button" data-group="blog_post" data-url="/webpush/save_information" href="#">
-        {% trans 'Notify me when have new post' %}
+  {% if from_notification %}
+    <div class="unsubscribe-blog-post">
+      <a id="webpush-unsubscribe-button" data-group="blog_post" data-url="/webpush/save_information" href="#">
+        {% trans 'I don\'t want to be notified anymore.' %}
       </a>
-    </p>
-    <div id="webpush-message"></div>
-  </div>
+      <div class="webpush-message"></div>
+    </div>
+  {% endif %}
+
+  {% include 'blog/post.html' %}
+
+  {% if not from_notification %}
+    <div class="subcribe-blog-post">
+      <a id="webpush-subscribe-button" data-group="blog_post" data-url="/webpush/save_information" href="#">
+        {% trans 'Notify me when have new post.' %}
+      </a>
+      <div class="webpush-message"></div>
+    </div>
+  {% endif %}
+
   <div id="comments">
     <div class="fb-comments" data-href="{{ absolute_url }}" data-numposts="50" data-width="100%"></div>
   </div>
@@ -21,6 +36,7 @@
 
 {% block footer-js %}
   {{ block.super }}
+  <script>WEBPUSH_COOKIE_NAME = 'webpush_blog_post';</script>
   <script id="webpush-js" src="{% static 'blog/js/webpush.js' %}"></script>
   <script id="service-worker-js" src="/serviceworker.js"></script>
 {% endblock %}
