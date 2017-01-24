@@ -28,11 +28,11 @@ def django_settings(request):
 def nav_links(request):
     links = [{
         'href': reverse('index'),
-        'text': _('Home'),
+        'text': _('Trang chủ'),
         'class': 'active',
     }, {
         'href': reverse('route:suggest'),
-        'text': _('Route'),
+        'text': _('Lịch trình'),
         'patterns': [
             r'^/route',
         ],

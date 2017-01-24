@@ -24,7 +24,7 @@
   </div>
   <div>
     <span class="formatted_address"></span>
-    <button class="btn btn-primary" type="button" id="btn_suggest">
+    <button class="btn btn-primary" type="button" id="btn_suggest" style="display: none">
       {% trans 'Suggest' %}
     </button>
   </div>
@@ -71,13 +71,6 @@
 
   <script>
       window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
-      function initMap() {
-          // Create a map object and specify the DOM element for display.
-          gMap = new google.maps.Map(document.getElementById('map'), {
-              center: {lat: 16.85, lng: 107.65},
-              zoom: 5
-          });
-      }
   </script>
   <script src="{% static 'route/js/suggest.js' %}"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"

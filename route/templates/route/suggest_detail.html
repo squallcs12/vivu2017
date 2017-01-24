@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n %}
+
+{% block head-link %}
+  {{ block.super }}
+  <link href="{% static 'route/css/suggest.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+  <div class="row suggest-info">
+    <div class="col-lg-12">
+      <h3>{% trans 'Địa điểm nên đi' %}</h3>
+    </div>
+    <div class="col-lg-12 address">
+      <strong>{{ suggest.address }}</strong>
+    </div>
+    <div class="col-lg-12 description">
+      <pre>{{ suggest.description }}</pre>
+    </div>
+    <br/>
+  </div>
+  <div id="map"></div>
+
+  <div id="votes">
+    <br/>
+    <p>
+      <strong>{% trans 'Bạn có thấy tui nên đến chỗ này ko? Bấm like để đồng ý nha.' %}</strong>
+      {% trans 'Chứ ngồi viết chức năng vote thì mât thời gian hơn là xài facebook plugin ^^.' %}
+    </p>
+    <p>
+      {% trans 'Mình sẽ chọn 1-3 địa điểm mỗi tỉnh để đi trong chuyến này.' %}
+    </p>
+    <div class="fb-like" data-href="{{ request.build_absolute_uri }}" data-layout="button_count"
+         data-action="like" data-size="small" data-show-faces="true" data-share="true"></div>
+
+  </div>
+
+  <div id="related_places">
+    <div class="row">
+      <h4 class="col-lg-12">{% trans 'Các địa điểm cùng tỉnh' %}</h4>
+      {% for place in related_places %}
+        {% include 'route/suggested_place_compact.html' %}
+        {% empty %}
+        <div class="col-lg-12">
+          <p>{% trans 'Chưa có địa điểm nào ở cùng tỉnh thành này được đề cập.' %}</p>
+        </div>
+      {% endfor %}
+    </div>
+    <div>
+      <p>
+        <a href="{% url 'route:suggest' %}" class="btn btn-primary">
+          {% trans 'Gợi ý một địa điểm nhé.' %}
+        </a>
+      </p>
+    </div>
+  </div>
+
+  <div id="comments">
+    <div class="fb-comments" data-href="{{ absolute_url }}" data-numposts="50" data-width="100%"></div>
+  </div>
+{% endblock %}
+
+{% block footer-js %}
+  {{ block.super }}
+
+  <script>
+      window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
+      var suggest = {
+          location: {
+              lat: {{ suggest.lat }},
+              lng: {{ suggest.lng }}
+          }
+      }
+  </script>
+
+  <script src="{% static 'route/js/suggest_detail.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
+          async defer></script>
+{% endblock %}

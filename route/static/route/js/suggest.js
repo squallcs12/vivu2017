@@ -1,6 +1,15 @@
 /**
  * Created by bang on 24/01/2017.
  */
+var gMap;
+
+function initMap() {
+    // Create a map object and specify the DOM element for display.
+    gMap = new google.maps.Map(document.getElementById('map'), {
+        center: {lat: 16.85, lng: 107.65},
+        zoom: 5
+    });
+}
 
 (function ($) {
     var listener = 0,
@@ -70,7 +79,7 @@
     }
 
     function getProvince(place) {
-        for (var i = place.address_components.length -1 ; i >= 0; i--) {
+        for (var i = place.address_components.length - 1; i >= 0; i--) {
             var component = place.address_components[i];
             if (component.types.indexOf('administrative_area_level_1') != -1) {
                 return component.short_name;
@@ -87,7 +96,7 @@
         $("#suggest_modal").modal('show');
     }
 
-    function suggest(place){
+    function suggest(place) {
         var place_info = {
             address: place.formatted_address,
             lat: place.geometry.location.lat.toFixed(2),

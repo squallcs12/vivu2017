@@ -16,6 +16,8 @@ class SuggestView(TemplateView):
 
         serializer.is_valid(True)
 
-        serializer.save()
+        suggest = serializer.save()
 
-        return Response(serializer.data, status=status.HTTP_201_CREATED)
+        return Response({
+            'url': suggest.get_absolute_url(),
+        }, status=status.HTTP_201_CREATED)
