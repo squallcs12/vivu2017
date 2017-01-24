@@ -1,0 +1,85 @@
+{% extends 'base.html' %}
+{% load i18n staticfiles %}
+
+{% block head-link %}
+  {{ block.super }}
+  <link href="{% static 'route/css/suggest.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+  <div id="address">
+    <form class="form-horizontal" action="" method="POST">
+      <div class="form-group">
+        <div class="col-md-2">
+          <label for="id_address" class="control-label">
+            {% trans 'Address' %}
+          </label>
+        </div>
+        <div class="col-md-10">
+          <input class="form-control" id="id_address" name="address"/>
+        </div>
+      </div>
+      {% csrf_token %}
+    </form>
+  </div>
+  <div>
+    <span class="formatted_address"></span>
+    <button class="btn btn-primary" type="button" id="btn_suggest">
+      {% trans 'Suggest' %}
+    </button>
+  </div>
+  <div id="map"></div>
+  <div class="modal fade" id="suggest_modal">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+          <h4 class="modal-title">Suggest</h4>
+        </div>
+        <div class="modal-body">
+          <div>
+            {% trans 'Suggest to visit this place' %}
+            <span class="formatted_address"></span>
+          </div>
+          <div>
+            <form class="form-horizontal" action="" method="post">
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="id_description">
+                    {% trans 'Enter some short description to help me easier to know this place' %}
+                  </label>
+
+                </div>
+                <div class="col-md-12">
+                  <textarea name="description" id="id_description" class="form-control"></textarea>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary" id="id_submit_suggest">Submit</button>
+        </div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer-js %}
+  {{ block.super }}
+
+  <script>
+      window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
+      function initMap() {
+          // Create a map object and specify the DOM element for display.
+          gMap = new google.maps.Map(document.getElementById('map'), {
+              center: {lat: 16.85, lng: 107.65},
+              zoom: 5
+          });
+      }
+  </script>
+  <script src="{% static 'route/js/suggest.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
+          async defer></script>
+{% endblock %}

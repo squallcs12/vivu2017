@@ -12,12 +12,14 @@
             <span class="icon-bar"></span>
           </button>
         </div>
-         <!-- Collect the nav links, forms, and other content for toggling -->
+        <!-- Collect the nav links, forms, and other content for toggling -->
         <div class="collapse navbar-collapse nav-wil" id="bs-example-navbar-collapse-1">
           <ul class="nav navbar-nav">
-            <li class="hvr-bounce-to-bottom active">
-              <a href="/">{% trans 'Home' %}</a>
-            </li>
+            {% for link in nav_links %}
+              <li class="hvr-bounce-to-bottom {{ link.class }}">
+                <a href="{{ link.href }}">{{ link.text }}</a>
+              </li>
+            {% endfor %}
           </ul>
         </div>
       </div>
