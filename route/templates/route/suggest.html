@@ -23,26 +23,38 @@
     </form>
   </div>
   <div>
-    <span class="formatted_address"></span>
+    <span class="formatted_address"><br/></span>
     <button class="btn btn-primary" type="button" id="btn_suggest" style="display: none">
       {% trans 'Suggest' %}
     </button>
   </div>
   <div id="map"></div>
   <div class="modal fade" id="suggest_modal">
-    <div class="modal-dialog">
-      <div class="modal-content">
-        <div class="modal-header">
-          <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-          <h4 class="modal-title">Suggest</h4>
-        </div>
-        <div class="modal-body">
-          <div>
-            {% trans 'Suggest to visit this place' %}
-            <span class="formatted_address"></span>
+    <form class="form-horizontal" action="" method="post" id="suggest_form">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Suggest</h4>
           </div>
-          <div>
-            <form class="form-horizontal" action="" method="post">
+          <div class="modal-body">
+            <div>
+              <p>
+                {% trans 'Suggest to visit this place' %}
+                <span class="formatted_address"></span>
+              </p>
+            </div>
+            <div>
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <label for="id_name">
+                    {% trans 'Địa danh' %}
+                  </label>
+                </div>
+                <div class="col-md-12">
+                  <input type="text" id="id_name" name="name" class="form-control" required="required"/>
+                </div>
+              </div>
               <div class="form-group">
                 <div class="col-md-12">
                   <label for="id_description">
@@ -51,18 +63,18 @@
 
                 </div>
                 <div class="col-md-12">
-                  <textarea name="description" id="id_description" class="form-control"></textarea>
+                  <textarea name="description" id="id_description" class="form-control" required="required"></textarea>
                 </div>
               </div>
-            </form>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="id_submit_suggest">Submit</button>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary" id="id_submit_suggest">Submit</button>
-        </div>
       </div>
-    </div>
+    </form>
   </div>
 {% endblock %}
 

@@ -31,7 +31,7 @@ def nav_links(request):
         'text': _('Trang chủ'),
         'class': 'active',
     }, {
-        'href': reverse('route:suggest'),
+        'href': reverse('route:index'),
         'text': _('Lịch trình'),
         'patterns': [
             r'^/route',

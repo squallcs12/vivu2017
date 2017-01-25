@@ -1,0 +1,55 @@
+{% extends 'base.html' %}
+{% load staticfiles i18n %}
+
+{% block title %}{% trans 'Lịch trình' %}{% endblock %}
+
+{% block head-link %}
+  {{ block.super }}
+  <link href="{% static 'route/css/suggest.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+  <div class="row">
+    <div class="col-lg-12">
+      <h3>{% trans 'Lịch trình' %}</h3>
+      <p>
+        <a href="{% url 'route:suggest' %}">{% trans 'Gợi ý địa điểm' %}</a>
+      </p>
+    </div>
+    <div class="col-lg-7">
+      <div id="suggests">
+        <div class="row">
+          {% for suggest in top_suggests %}
+            <div class="col-md-6 top-suggest">
+              <div class="well">
+                <p>
+                  <a href="{{ suggest.get_absolute_url }}"><strong>{{ suggest.name }}</strong></a>
+                </p>
+                <p>
+                  <i>{{ suggest.address }}</i>
+                </p>
+                <div class="image" style="background-image: url('{{ suggest.get_google_image }}')"></div>
+              </div>
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+    <div class="col-lg-5">
+      <div id="route">
+        <div id="map" class="route"></div>
+      </div>
+    </div>
+  </div>
+{% endblock %}
+
+{% block footer-js %}
+  {{ block.super }}
+
+  <script>
+      window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
+  </script>
+  <script src="{% static 'route/js/route.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
+          async defer></script>
+{% endblock %}

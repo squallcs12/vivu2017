@@ -4,6 +4,10 @@
     width: 100%;
 }
 
+#map.route {
+    height: 800px;
+}
+
 .maps-frame {
     height: 430px;
     width: 100%;
@@ -35,4 +39,17 @@ p.top-desc {
 
 p.bottom-desc {
     padding: 0 1em 1em 1em;
+}
+
+.top-suggest .well {
+    height: 300px;
+    overflow: hidden;
+}
+
+.top-suggest .image {
+    width: 100%;
+    height: 180px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 180px;
+    background-size:;: 100% 180px;
 }

@@ -3,20 +3,37 @@
  */
 var gMap;
 
-function initMap() {
-    // Create a map object and specify the DOM element for display.
-    gMap = new google.maps.Map(document.getElementById('map'), {
-        center: {lat: 16.85, lng: 107.65},
-        zoom: 5
-    });
-}
-
 (function ($) {
     var listener = 0,
         marker,
         currentPlace,
         $formattedAddress = $(".formatted_address"),
-        $btnSuggest = $("#btn_suggest");
+        $btnSuggest = $("#btn_suggest"),
+        $nameField = $("#id_name"),
+        $addressField = $("#id_address"),
+        $descriptionField = $("#id_description");
+
+    initMap = function () {
+        // Create a map object and specify the DOM element for display.
+        gMap = new google.maps.Map(document.getElementById('map'), {
+            center: {lat: 16.60, lng: 105.64},
+            zoom: 5
+        });
+
+        gMap.addListener('click', function (event) {
+            if (gMap.getZoom() >= 13) {
+                var latlng = event.latLng.lat() + ',' + event.latLng.lng();
+
+                $.get('https://maps.googleapis.com/maps/api/geocode/json', {
+                    'latlng': latlng,
+                    'key': window.GOOGLE_MAP_API_KEY
+                }, _display)
+            } else {
+                $formattedAddress.text('Zoom thêm ' + (13 - gMap.getZoom()) + ' lần nữa cho chính xác nha. ');
+            }
+        });
+    };
+
 
     function is_specific_address(result) {
         return result.address_components.length >= 4;
@@ -31,41 +48,45 @@ function initMap() {
         return response.results[0];
     }
 
-    function _try_display(address) {
-        $.get('https://maps.googleapis.com/maps/api/geocode/json', {
-            'address': address,
-            'key': 'AIzaSyAwPtuLHn3q5YdVlbQ3L8Z7Z20vObX9Ws8'
-        }, function (response) {
-            var result = filter_result(response);
+    function _display(response) {
+        var result = filter_result(response);
+        if (!result) {
+            return;
+        }
 
+        $formattedAddress.text(result.formatted_address);
 
-            $formattedAddress.text(result.formatted_address);
+        $nameField.val($addressField.val());
 
-            if (!is_specific_address(result)) {
-                $formattedAddress.text(
-                    result.formatted_address + ". Địa chỉ này quá chung chung, nhập địa chỉ cụ thể hơn nhé");
-                $btnSuggest.hide();
-                return;
-            }
+        if (!is_specific_address(result)) {
+            $formattedAddress.text(
+                result.formatted_address + ". Địa chỉ này quá chung chung, nhập địa chỉ cụ thể hơn nhé");
+        }
 
-            $btnSuggest.show();
+        $btnSuggest.show();
 
-            var location = result.geometry.location;
-            gMap.setCenter(location);
-            gMap.setZoom(14);
+        var location = result.geometry.location;
+        gMap.setCenter(location);
+        gMap.setZoom(14);
 
-            if (marker) {
-                marker.setMap(null);
-            }
+        if (marker) {
+            marker.setMap(null);
+        }
 
-            marker = new google.maps.Marker({
-                position: location,
-                map: gMap,
-                title: result.formatted_address
-            });
-
-            currentPlace = result;
+        marker = new google.maps.Marker({
+            position: location,
+            map: gMap,
+            title: result.formatted_address
         });
+
+        currentPlace = result;
+    }
+
+    function _try_display(address_name) {
+        $.get('https://maps.googleapis.com/maps/api/geocode/json', {
+            'address': address_name,
+            'key': window.GOOGLE_MAP_API_KEY
+        }, _display);
     }
 
     function try_display(address) {
@@ -98,12 +119,13 @@ function initMap() {
 
     function suggest(place) {
         var place_info = {
+            name: $nameField.val(),
             address: place.formatted_address,
             lat: place.geometry.location.lat.toFixed(2),
             lng: place.geometry.location.lng.toFixed(2),
             place_id: place.place_id,
             province: getProvince(place),
-            description: $("#id_description").val()
+            description: $descriptionField.val()
         };
 
         $.ajax({
@@ -123,15 +145,17 @@ function initMap() {
         });
     }
 
-    $("#id_address").keyup(function () {
+    $addressField.keyup(function () {
         try_display($(this).val());
     });
 
-    $("#btn_suggest").click(function (e) {
+    $btnSuggest.click(function (e) {
         show_suggest(currentPlace);
     });
 
-    $("#id_submit_suggest").click(function () {
+    $("#suggest_form").submit(function (e) {
+        e.preventDefault();
         suggest(currentPlace);
     });
+
 })(jQuery);
