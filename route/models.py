@@ -25,7 +25,7 @@ class Suggest(models.Model):
     chosen = models.BooleanField(default=False)
 
     google_image = models.URLField(blank=True)
-    google_images = ArrayField(models.URLField())
+    google_images = ArrayField(models.URLField(), default=[])
 
     HASHID = Hashids(settings.SECRET_KEY)
 
@@ -57,9 +57,7 @@ class Suggest(models.Model):
         }
         return 'https://maps.googleapis.com/maps/api/staticmap?{}'.format(parse.urlencode(params))
 
-    def get_google_image(self):
-        if self.google_image:
-            return self.google_image
+    def _fetch_google_images(self):
         service = build("customsearch", "v1", developerKey=settings.GOOGLE_MAP_API_KEY)
         res = service.cse().list(
             q=self.name,
@@ -78,4 +76,14 @@ class Suggest(models.Model):
         self.google_images = google_images
         self.save()
 
+    def get_google_image(self):
+        if not self.google_image:
+            self._fetch_google_images()
+
         return self.google_image
+
+    def get_google_images(self):
+        if not self.google_images:
+            self._fetch_google_images()
+
+        return self.google_images

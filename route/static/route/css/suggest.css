@@ -51,5 +51,14 @@ p.bottom-desc {
     height: 180px;
     background: top center no-repeat;
     -webkit-background-size: 100% 180px;
-    background-size:;: 100% 180px;
+    background-size: 100% 180px;
+}
+
+.place-images .image {
+    width: 100%;
+    height: 250px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 250px;
+    background-size: 100% 250px;
+    display: block;
 }
