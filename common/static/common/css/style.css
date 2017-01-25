@@ -3271,12 +3271,12 @@ a {
 }
 
 .btn {
-    font-family: "LobsterTwo-Regular";
-    border: none;
-    border-radius: 0;
+    font-family: "LobsterTwo-Regular", sans-serif;
 }
 
 .btn-primary {
+    border: none;
+    border-radius: 0;
     background: #C34C21;
 }
 

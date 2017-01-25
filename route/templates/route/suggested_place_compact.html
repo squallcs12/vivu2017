@@ -1,3 +1,8 @@
-<div class="col-lg-3">
-  <strong>{{ place.address }}</strong>
+<div class="col-lg-3 suggest-place-compact">
+  <div class="well">
+    <p>
+      <a href="{{ suggest.get_absolute_url }}"><strong>{{ suggest.name }}</strong></a>
+    </p>
+    <div class="image" style="background-image: url('{{ suggest.get_google_image }}')"></div>
+  </div>
 </div>

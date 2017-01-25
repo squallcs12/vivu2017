@@ -29,7 +29,11 @@ var gMap;
                     'key': window.GOOGLE_MAP_API_KEY
                 }, _display)
             } else {
-                $formattedAddress.text('Zoom thêm ' + (13 - gMap.getZoom()) + ' lần nữa cho chính xác nha. ');
+                $formattedAddress.html(
+                    '<div class="alert alert-danger">'
+                    + 'Zoom thêm <strong>' + (13 - gMap.getZoom()) + '</strong> lần nữa cho chính xác nha.'
+                    + '</div>'
+                );
             }
         });
     };

@@ -62,7 +62,7 @@
   <div id="related_places">
     <div class="row">
       <h4 class="col-lg-12">{% trans 'Các địa điểm cùng tỉnh' %}</h4>
-      {% for place in related_places %}
+      {% for suggest in related_places %}
         {% include 'route/suggested_place_compact.html' %}
         {% empty %}
         <div class="col-lg-12">
@@ -70,10 +70,11 @@
         </div>
       {% endfor %}
     </div>
+    <br />
     <div>
       <p>
         <a href="{% url 'route:suggest' %}" class="btn btn-primary">
-          {% trans 'Gợi ý một địa điểm nhé.' %}
+          {% trans 'Gợi ý một địa điểm khác nhé.' %}
         </a>
       </p>
     </div>
