@@ -49,6 +49,20 @@
   <script>
       window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
   </script>
+  <script>
+      var chosenPlaces = [
+          {% for place in chosen_places %}
+              {
+                  location: {
+                      lat: {{ place.lat }},
+                      lng: {{ place.lng }}
+                  },
+                  name: '{{ place.name }}',
+                  href: '{{ place.get_absolute_url }}'
+              },
+          {% endfor %}
+      ];
+  </script>
   <script src="{% static 'route/js/route.js' %}"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
           async defer></script>
