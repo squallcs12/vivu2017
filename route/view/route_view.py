@@ -13,4 +13,3 @@ class RouteView(TemplateView):
             'chosen_places': Suggest.objects.filter(chosen=True),
         })
         return context
-

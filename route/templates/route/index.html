@@ -17,6 +17,7 @@
       </p>
     </div>
     <div class="col-lg-7">
+      <h3>{% trans 'Những địa điểm nổi bật' %}</h3>
       <div id="suggests">
         <div class="row">
           {% for suggest in top_suggests %}
@@ -34,6 +35,9 @@
           {% endfor %}
         </div>
       </div>
+      <p>
+        <a href="{% url 'route:suggest-list' %}">{% trans 'Xem tất cả gợi ý' %}</a>
+      </p>
     </div>
     <div class="col-lg-5">
       <div id="route">

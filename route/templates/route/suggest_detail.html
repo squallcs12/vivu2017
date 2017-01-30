@@ -16,6 +16,9 @@
     </div>
     <div class="col-lg-12 address">
       <strong>{{ suggest.name }}</strong>
+      {% if suggest.chosen %}
+        <span class="label label-success">{% trans 'Sẽ đi' %}</span>
+      {% endif %}
       <br/>
       <i>{{ suggest.province }}</i>
       <br/>

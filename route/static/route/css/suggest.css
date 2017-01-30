@@ -67,6 +67,19 @@ p.bottom-desc {
     background-size: 100% 180px;
 }
 
+.suggest-list-item {
+    height: 300px;
+    overflow: hidden;
+}
+
+.suggest-list-item .image {
+    width: 100%;
+    height: 180px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 180px;
+    background-size: 100% 180px;
+}
+
 .place-images {
     margin-top: 30px;
 }

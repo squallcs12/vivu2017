@@ -14,7 +14,6 @@ import os
 
 import environ
 from django.core.urlresolvers import reverse_lazy
-from django.utils.translation import ugettext_lazy as _
 
 env = environ.Env(
     DEBUG=(bool, True),
@@ -29,7 +28,8 @@ env = environ.Env(
     FACEBOOK_APP_ID=(str, ''),
     GCM_ID=(str, ''),
     GCM_KEY=(str, ''),
-    GOOGLE_MAP_API_KEY=(str, '')
+    GOOGLE_MAP_API_KEY=(str, ''),
+    ROUTE_SUGGEST_LIST_PAGE_SIZE=(int, 4)
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -204,13 +204,12 @@ WEBPUSH_SETTINGS = {
     'GCM_KEY': env('GCM_KEY'),
 }
 
-
 # WEBSITE CONFIG
 HEADER_POST_ID = env('HEADER_POST_ID')
 HEADER_PROGRESS_ID = env('HEADER_PROGRESS_ID')
 POST_PER_PAGE = env('POST_PER_PAGE')
 FACEBOOK_APP_ID = env('FACEBOOK_APP_ID')
-
+ROUTE_SUGGEST_LIST_PAGE_SIZE = env('ROUTE_SUGGEST_LIST_PAGE_SIZE')
 
 # route config
 GOOGLE_MAP_API_KEY = env('GOOGLE_MAP_API_KEY')
