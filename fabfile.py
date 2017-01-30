@@ -52,6 +52,10 @@ def setenv(name, value):
     restart_web()
 
 
+def getenv():
+    run('cat {}'.format(ENV_FILE))
+
+
 def deploy():
     """Deploy current HEAD to server"""
     _clone_code()

@@ -3271,12 +3271,12 @@ a {
 }
 
 .btn {
-    font-family: "LobsterTwo-Regular";
-    border: none;
-    border-radius: 0;
+    font-family: "LobsterTwo-Regular", sans-serif;
 }
 
 .btn-primary {
+    border: none;
+    border-radius: 0;
     background: #C34C21;
 }
 
@@ -3290,7 +3290,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .row .row {
-    margin: 0;
+    margin-top: 0;
 }
 
 .progress-hide-on-zero .progress-bar {
@@ -3299,4 +3299,8 @@ h1, h2, h3, h4, h5, h6 {
 
 .progress-bar a {
     color: #fff;
+}
+
+.notifications {
+    padding-top: 1em;
 }

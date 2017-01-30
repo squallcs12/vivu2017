@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+{% load i18n staticfiles %}
+
+{% block head-link %}
+  {{ block.super }}
+  <link href="{% static 'route/css/suggest.css' %}" rel="stylesheet"/>
+{% endblock %}
+
+{% block content %}
+  <div id="address">
+    <form class="form-horizontal" action="" method="POST">
+      <div class="form-group">
+        <div class="col-md-2">
+          <label for="id_address" class="control-label">
+            {% trans 'Address' %}
+          </label>
+        </div>
+        <div class="col-md-10">
+          <input class="form-control" id="id_address" name="address"/>
+        </div>
+      </div>
+      {% csrf_token %}
+    </form>
+  </div>
+  <div>
+    <span class="formatted_address"><br/></span>
+    <button class="btn btn-primary" type="button" id="btn_suggest" style="display: none">
+      {% trans 'Suggest' %}
+    </button>
+  </div>
+  <div id="map"></div>
+  <div class="modal fade" id="suggest_modal">
+    <form class="form-horizontal" action="" method="post" id="suggest_form">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">Suggest</h4>
+          </div>
+          <div class="modal-body">
+            <div>
+              <p>
+                {% trans 'Suggest to visit this place' %}
+                <span class="formatted_address"></span>
+              </p>
+            </div>
+            <div>
+              <div class="form-group">
+                <div class="col-lg-12">
+                  <label for="id_name">
+                    {% trans 'Địa danh' %}
+                  </label>
+                </div>
+                <div class="col-md-12">
+                  <input type="text" id="id_name" name="name" class="form-control" required="required"/>
+                </div>
+              </div>
+              <div class="form-group">
+                <div class="col-md-12">
+                  <label for="id_description">
+                    {% trans 'Enter some short description to help me easier to know this place' %}
+                  </label>
+
+                </div>
+                <div class="col-md-12">
+                  <textarea name="description" id="id_description" class="form-control" required="required"></textarea>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            <button type="submit" class="btn btn-primary" id="id_submit_suggest">Submit</button>
+          </div>
+        </div>
+      </div>
+    </form>
+  </div>
+{% endblock %}
+
+{% block footer-js %}
+  {{ block.super }}
+
+  <script>
+      window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
+  </script>
+  <script src="{% static 'route/js/suggest.js' %}"></script>
+  <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
+          async defer></script>
+{% endblock %}

@@ -1,0 +1,98 @@
+#map {
+    height: 430px;
+    position: relative;
+    width: 100%;
+}
+
+#map.route {
+    height: 800px;
+}
+
+.maps-frame {
+    height: 430px;
+    width: 100%;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton a {
+    color: #757575;
+    display: inline-block;
+    height: 100%;
+    padding: 0 24px;
+    width: 100%;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton {
+    padding: 0;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton.selected a {
+    color: #03a9f4;
+}
+
+.kd-tabbed-vert.header-links .kd-tabbutton a:focus {
+    text-decoration: none;
+}
+
+p.top-desc {
+    padding: 1em 1em .1em 1em;
+}
+
+p.bottom-desc {
+    padding: 0 1em 1em 1em;
+}
+
+.top-suggest .well {
+    height: 300px;
+    overflow: hidden;
+}
+
+.top-suggest .image {
+    width: 100%;
+    height: 180px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 180px;
+    background-size: 100% 180px;
+}
+
+.suggest-place-compact {
+    height: 250px;
+    overflow: hidden;
+}
+
+.suggest-place-compact .image {
+    width: 100%;
+    height: 180px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 180px;
+    background-size: 100% 180px;
+}
+
+.suggest-list-item {
+    height: 300px;
+    overflow: hidden;
+}
+
+.suggest-list-item .image {
+    width: 100%;
+    height: 180px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 180px;
+    background-size: 100% 180px;
+}
+
+.place-images {
+    margin-top: 30px;
+}
+
+.place-images .image {
+    width: 100%;
+    height: 250px;
+    background: top center no-repeat;
+    -webkit-background-size: 100% 250px;
+    background-size: 100% 250px;
+    display: block;
+}
+
+#related_places {
+    margin-top: 30px;
+}
