@@ -125,8 +125,8 @@ var gMap;
         var place_info = {
             name: $nameField.val(),
             address: place.formatted_address,
-            lat: place.geometry.location.lat.toFixed(2),
-            lng: place.geometry.location.lng.toFixed(2),
+            lat: place.geometry.location.lat.toFixed(6),
+            lng: place.geometry.location.lng.toFixed(6),
             place_id: place.place_id,
             province: getProvince(place),
             description: $descriptionField.val()

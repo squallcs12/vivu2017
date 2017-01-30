@@ -14,15 +14,16 @@ from hashids import Hashids
 class Suggest(models.Model):
     name = models.CharField(max_length=255)
     address = models.CharField(max_length=255)
-    lat = models.DecimalField(max_digits=5, decimal_places=2)
-    lng = models.DecimalField(max_digits=5, decimal_places=2)
+    lat = models.DecimalField(max_digits=9, decimal_places=6)
+    lng = models.DecimalField(max_digits=9, decimal_places=6)
     place_id = models.CharField(max_length=255, unique=True)
     province = models.CharField(max_length=80)
     created_date = models.DateTimeField(auto_now_add=True)
     description = models.TextField()
 
     like_count = models.IntegerField(default=0)
-    chosen = models.BooleanField(default=False)
+    is_chosen = models.BooleanField(default=False)
+    is_approved = models.BooleanField(default=False)
 
     google_image = models.URLField(blank=True)
     google_images = ArrayField(models.URLField(), default=[])

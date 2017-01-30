@@ -3300,3 +3300,7 @@ h1, h2, h3, h4, h5, h6 {
 .progress-bar a {
     color: #fff;
 }
+
+.notifications {
+    padding-top: 1em;
+}

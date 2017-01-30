@@ -6,7 +6,7 @@ from route.models import Suggest
 
 
 class SuggestListView(ListView):
-    queryset = Suggest.objects.all().exclude(chosen=True)
+    queryset = Suggest.objects.filter(is_approved=True).exclude(is_chosen=True)
     context_object_name = 'suggests'
     paginate_by = settings.ROUTE_SUGGEST_LIST_PAGE_SIZE
 

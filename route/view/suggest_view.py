@@ -1,4 +1,6 @@
+from django.contrib import messages
 from django.utils.decorators import method_decorator
+from django.utils.translation import ugettext as _
 from django.views.generic.base import TemplateView
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
@@ -17,6 +19,10 @@ class SuggestView(TemplateView):
         serializer.is_valid(True)
 
         suggest = serializer.save()
+
+        messages.success(self.request, _('Cám ơn bạn đã gợi ý một địa điểm hay cho chuyến đi này.'))
+        if not suggest.is_approved:
+            messages.info(self.request, _('Địa điểm sau khi được kiểm duyệt sẽ được hiển thị lên danh sách.'))
 
         return Response({
             'url': suggest.get_absolute_url(),

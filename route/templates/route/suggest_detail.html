@@ -16,8 +16,15 @@
     </div>
     <div class="col-lg-12 address">
       <strong>{{ suggest.name }}</strong>
-      {% if suggest.chosen %}
-        <span class="label label-success">{% trans 'Sẽ đi' %}</span>
+      {% if suggest.is_chosen %}
+        <span class="label label-success" title="{% trans 'Hành trình sẽ đi qua địa điểm này' %}">
+          {% trans 'Sẽ đi' %}
+        </span>
+      {% endif %}
+      {% if not suggest.is_approved %}
+        <span class="label label-warning" title="{% trans 'Chưa được đăng lên danh sách' %}">
+          {% trans 'Chưa duyệt' %}
+        </span>
       {% endif %}
       <br/>
       <i>{{ suggest.province }}</i>
@@ -73,7 +80,7 @@
         </div>
       {% endfor %}
     </div>
-    <br />
+    <br/>
     <div>
       <p>
         <a href="{% url 'route:suggest' %}" class="btn btn-primary">
