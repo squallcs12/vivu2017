@@ -2,9 +2,7 @@ machine:
   python:
     version: 3.4.3
   environment:
-    RDS_DBNAME: circle_test
-    RDS_USERNAME: ubuntu
-    RDS_HOSTNAME: localhost
+    DATABASE_URL: postgresql://ubuntu@localhost:5432/circle_test
 
 test:
   override:
