@@ -2,6 +2,11 @@
 {% load i18n staticfiles %}
 {% load progress blog %}
 
+{% block head-link %}
+  {{ block.super }}
+  <meta name="google-site-verification" content="BL3uhUOoKWB61I0QCLB3yLXyXoAMYIMS0wLMkNw04QA" />
+{% endblock %}
+
 
 {% block content %}
   <div class="row planing-progress">
