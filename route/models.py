@@ -38,6 +38,12 @@ class Suggest(models.Model):
         return self.HASHID.encode(self.id)
 
     @classmethod
+    def get_id_from_hash(cls, hash_id):
+        ids = cls.HASHID.decode(hash_id)
+        if ids:
+            return ids[0]
+
+    @classmethod
     def get_by_hash(cls, hash_id):
         pk = cls.HASHID.decode(hash_id)
         if not pk:

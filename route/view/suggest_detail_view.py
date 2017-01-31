@@ -1,6 +1,9 @@
+from django.http.response import Http404, HttpResponse
+from django.views.decorators.csrf import csrf_exempt
 from django.views.generic.base import TemplateView
 
 from route.models import Suggest
+from route.services.suggest_like import SuggestLike
 
 
 class SuggestDetailView(TemplateView):
@@ -17,3 +20,16 @@ class SuggestDetailView(TemplateView):
             'related_places': related_places
         })
         return context
+
+    @csrf_exempt
+    def dispatch(self, request, *args, **kwargs):
+        return super(SuggestDetailView, self).dispatch(request, *args, **kwargs)
+
+    def post(self, request, hash_id):
+        suggest_id = Suggest.get_id_from_hash(hash_id)
+        if not suggest_id:
+            raise Http404()
+
+        SuggestLike.add_id(suggest_id)
+
+        return HttpResponse()

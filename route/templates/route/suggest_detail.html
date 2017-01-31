@@ -112,10 +112,4 @@
   <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"
           async defer></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/ekko-lightbox/4.0.1/ekko-lightbox.min.js"></script>
-  <script>
-      jQuery(document).on('click', '[data-toggle="lightbox"]', function (event) {
-          event.preventDefault();
-          jQuery(this).ekkoLightbox();
-      });
-  </script>
 {% endblock %}
