@@ -83,6 +83,7 @@
 
   <script>
       window.GOOGLE_MAP_API_KEY = '{{ GOOGLE_MAP_API_KEY }}';
+      window.ROUTE_SUGGEST_NEW_API = "{% url 'route:suggest-new' %}";
   </script>
   <script src="{% static 'route/js/suggest.js' %}"></script>
   <script src="https://maps.googleapis.com/maps/api/js?key={{ GOOGLE_MAP_API_KEY }}&callback=initMap"

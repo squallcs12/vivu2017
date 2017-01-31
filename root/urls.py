@@ -17,6 +17,7 @@ from django.conf import settings
 from django.conf.urls import url, include
 from django.contrib import admin
 from django.views.static import serve
+from rest_framework_swagger.views import get_swagger_view
 
 from common.views.home_view import HomeView
 
@@ -27,6 +28,7 @@ urlpatterns = [
     url(r'^blog/', include('blog.urls', namespace='blog')),
     url(r'^webpush/', include('webpush.urls')),
     url(r'^route/', include('route.urls', namespace='route')),
+    url(r'^docs/$', get_swagger_view(title='API Docs'))
 ]
 
 if settings.DEBUG:
