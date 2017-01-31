@@ -133,7 +133,7 @@ var gMap;
         };
 
         $.ajax({
-            url: '',
+            url: window.ROUTE_SUGGEST_NEW_API,
             type: 'post',
             data: JSON.stringify(place_info),
             headers: {

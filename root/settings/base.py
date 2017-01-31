@@ -29,7 +29,9 @@ env = environ.Env(
     GCM_ID=(str, ''),
     GCM_KEY=(str, ''),
     GOOGLE_MAP_API_KEY=(str, ''),
-    ROUTE_SUGGEST_LIST_PAGE_SIZE=(int, 4)
+    ROUTE_SUGGEST_LIST_PAGE_SIZE=(int, 4),
+    CACHE_URL=(str, 'rediscache://127.0.0.1:6379:1'),
+    REST_FRAMEWORK_THROTTLE_ROUTE_SUGGEST=(str, '20/day')
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -66,6 +68,7 @@ INSTALLED_APPS = [
     'ckeditor',
     'ckeditor_uploader',
     'webpush',
+    'rest_framework_swagger',
 
     'accounts',
     'common',
@@ -161,10 +164,14 @@ SITE_ID = 1
 
 TEST_RUNNER = 'common.tests.core.DjangoNoseTestSuiteRunner'
 
-LOGIN_URL = reverse_lazy('account_login')
-LOGOUT_URL = reverse_lazy('account_logout')
-LOGIN_ERROR_URL = reverse_lazy('account_login')
-LOGIN_REDIRECT_URL = reverse_lazy('accounts:profile')
+LOGIN_URL = reverse_lazy('admin:login')
+LOGOUT_URL = reverse_lazy('admin:logout')
+LOGIN_ERROR_URL = reverse_lazy('index')
+LOGIN_REDIRECT_URL = reverse_lazy('index')
+
+CACHES = {
+    'default': env.cache(),
+ }
 
 vars().update(env.email(backend='djcelery_email.backends.CeleryEmailBackend'))
 DEFAULT_FROM_EMAIL = env('DEFAULT_FROM_EMAIL')
@@ -213,3 +220,13 @@ ROUTE_SUGGEST_LIST_PAGE_SIZE = env('ROUTE_SUGGEST_LIST_PAGE_SIZE')
 
 # route config
 GOOGLE_MAP_API_KEY = env('GOOGLE_MAP_API_KEY')
+
+# REST FRAMEWORK
+REST_FRAMEWORK = {
+    'DEFAULT_THROTTLE_CLASSES': (
+        'rest_framework.throttling.ScopedRateThrottle',
+    ),
+    'DEFAULT_THROTTLE_RATES': {
+        'route_suggest': env('REST_FRAMEWORK_THROTTLE_ROUTE_SUGGEST'),
+    }
+}
