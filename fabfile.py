@@ -1,4 +1,5 @@
 import datetime
+from time import sleep
 
 from fabric.api import run, local, put
 from fabric.contrib.files import append
@@ -116,6 +117,7 @@ def _make_link():
 def _restart_supervisor():
     _run_web("chmod +x {}/server/gunicorn.sh".format(CURRENT_DIR))
     run("supervisorctl -c %s/server/supervisor.conf reload || echo 'fail to reload supervisor'" % CURRENT_DIR)
+    sleep(3)
     run("supervisorctl -c %s/server/supervisor.conf restart all || supervisord -c %s/server/supervisor.conf" % (
         CURRENT_DIR, CURRENT_DIR))
 
