@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import environ
+from celery.schedules import crontab
 from django.core.urlresolvers import reverse_lazy
 
 env = environ.Env(
@@ -31,7 +32,10 @@ env = environ.Env(
     GOOGLE_MAP_API_KEY=(str, ''),
     ROUTE_SUGGEST_LIST_PAGE_SIZE=(int, 4),
     CACHE_URL=(str, 'rediscache://127.0.0.1:6379:1'),
-    REST_FRAMEWORK_THROTTLE_ROUTE_SUGGEST=(str, '20/day')
+    REDIS_URL=(str, 'redis://127.0.0.1:6379/0'),
+    REST_FRAMEWORK_THROTTLE_ROUTE_SUGGEST=(str, '20/day'),
+    FACEBOOK_ACCESS_TOKEN=(str, ''),
+    FACEBOOK_GRAPH_VERSION=(str, 'v2.8'),
 )
 ENV = env  # so it will be copied to django.conf.settings
 env.read_env('.env')
@@ -217,6 +221,8 @@ HEADER_PROGRESS_ID = env('HEADER_PROGRESS_ID')
 POST_PER_PAGE = env('POST_PER_PAGE')
 FACEBOOK_APP_ID = env('FACEBOOK_APP_ID')
 ROUTE_SUGGEST_LIST_PAGE_SIZE = env('ROUTE_SUGGEST_LIST_PAGE_SIZE')
+FACEBOOK_ACCESS_TOKEN = env('FACEBOOK_ACCESS_TOKEN')
+FACEBOOK_GRAPH_VERSION = env('FACEBOOK_GRAPH_VERSION')
 
 # route config
 GOOGLE_MAP_API_KEY = env('GOOGLE_MAP_API_KEY')
@@ -228,5 +234,17 @@ REST_FRAMEWORK = {
     ),
     'DEFAULT_THROTTLE_RATES': {
         'route_suggest': env('REST_FRAMEWORK_THROTTLE_ROUTE_SUGGEST'),
+    }
+}
+
+
+# REDIS https://redis-py.readthedocs.io/en/latest/#redis.StrictRedis.from_url
+REDIS_URL = env('REDIS_URL')
+
+# CELERY CONFIG http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#crontab-schedules
+CELERYBEAT_SCHEDULE = {
+    'update-suggest-like': {
+        'task': 'route.tasks.update_suggest_count',
+        'schedule': crontab()
     }
 }

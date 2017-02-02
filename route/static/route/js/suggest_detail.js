@@ -14,9 +14,23 @@ function initMap() {
         disableDoubleClickZoom: true
     });
 
-    marker = new google.maps.Marker({
+    var marker = new google.maps.Marker({
         position: suggest.location,
         map: gMap,
         title: 'H'
     });
 }
+
+
+jQuery(window).load(function () {
+    var $ = jQuery;
+
+    $(document).on('click', '[data-toggle="lightbox"]', function (event) {
+        event.preventDefault();
+        $(this).ekkoLightbox();
+    });
+
+    FB.Event.subscribe('edge.create', function () {
+        $.post('')
+    });
+});

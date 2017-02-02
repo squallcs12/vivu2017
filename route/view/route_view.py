@@ -8,8 +8,9 @@ class RouteView(TemplateView):
 
     def get_context_data(self, **kwargs):
         context = super(RouteView, self).get_context_data(**kwargs)
+        top_suggests = Suggest.objects.filter(is_approved=True).exclude(is_chosen=True).order_by('-like_count')[0:4]
         context.update({
-            'top_suggests': Suggest.objects.filter(is_approved=True).exclude(is_chosen=True)[0:4],
+            'top_suggests': top_suggests,
             'chosen_places': Suggest.objects.filter(is_chosen=True),
         })
         return context
