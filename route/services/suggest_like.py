@@ -38,4 +38,4 @@ class SuggestLike:
         data = response.json()
         if 'share' in data:
             share_count = data['share'].get('share_count', 0)
-            Suggest.objects.filter(id=suggest_id)[0:1].update(like_count=share_count)
+            Suggest.objects.filter(id=suggest_id).update(like_count=share_count)

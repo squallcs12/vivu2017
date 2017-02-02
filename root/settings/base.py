@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/1.9/ref/settings/
 import os
 
 import environ
+from celery.schedules import crontab
 from django.core.urlresolvers import reverse_lazy
 
 env = environ.Env(
@@ -239,3 +240,11 @@ REST_FRAMEWORK = {
 
 # REDIS https://redis-py.readthedocs.io/en/latest/#redis.StrictRedis.from_url
 REDIS_URL = env('REDIS_URL')
+
+# CELERY CONFIG http://docs.celeryproject.org/en/latest/userguide/periodic-tasks.html#crontab-schedules
+CELERYBEAT_SCHEDULE = {
+    'update-suggest-like': {
+        'task': 'route.tasks.update_suggest_count',
+        'schedule': crontab()
+    }
+}

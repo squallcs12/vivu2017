@@ -14,3 +14,5 @@ htmlcov/
 ghostdriver.log
 sqlite.db
 /media/
+celerybeat-schedule
+celerybeat.pid
